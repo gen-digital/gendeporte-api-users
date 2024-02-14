@@ -1,0 +1,6 @@
+application:
+  title: @project.artifactId@:${spring.profiles.active}
+  version: @project.version@
+
+server:
+  port: ${PORT:8443}

@@ -19,58 +19,59 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @MappedSuperclass
 public abstract class EntityBase implements Serializable{
-private static final long serialVersionUID = -879358140693474742L;
 
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-@Column(name = "id", updatable = false, nullable = false)
-private Integer id;
+    private static final long serialVersionUID = -879358140693474742L;
 
-@CreationTimestamp
-@Column(name = "created_at", updatable = false, nullable = false)
-private LocalDateTime createdAt;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
+    private Integer id;
 
-@UpdateTimestamp
-@Column(name = "updated_at", nullable = false)
-private LocalDateTime updatedAt;
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false, nullable = false)
+    private LocalDateTime createdAt;
 
-@Column(name = "enabled_at")
-private LocalDateTime enabledAt;
+    @UpdateTimestamp
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 
-@Column(name = "disabled_at")
-private LocalDateTime disabledAt;
+    @Column(name = "enabled_at")
+    private LocalDateTime enabledAt;
 
-@Column(name = "expired_at")
-private LocalDateTime expiredAt;
+    @Column(name = "disabled_at")
+    private LocalDateTime disabledAt;
 
-@Column(name = "locked_at")
-private LocalDateTime lockedAt;
+    @Column(name = "expired_at")
+    private LocalDateTime expiredAt;
 
-public abstract String getName();
+    @Column(name = "locked_at")
+    private LocalDateTime lockedAt;
 
-public boolean isEnabled() {
-    return this.enabledAt != null && DateUtils.nowAfter(this.enabledAt);
-}
+    public abstract String getName();
 
-public boolean isDisabled() {
-    return this.disabledAt != null && DateUtils.nowAfter(this.disabledAt);
-}
+    public boolean isEnabled() {
+        return this.enabledAt != null && DateUtils.nowAfter(this.enabledAt);
+    }
 
-public boolean isExpired() {
-    return this.expiredAt != null && DateUtils.nowAfter(this.expiredAt);
-}
+    public boolean isDisabled() {
+        return this.disabledAt != null && DateUtils.nowAfter(this.disabledAt);
+    }
 
-public boolean isLocked() {
-    return this.lockedAt != null && DateUtils.nowAfter(this.lockedAt);
-}
+    public boolean isExpired() {
+        return this.expiredAt != null && DateUtils.nowAfter(this.expiredAt);
+    }
 
-@PrePersist
-public void setCreatedAt() {
-    this.createdAt = LocalDateTime.now();
-}
+    public boolean isLocked() {
+        return this.lockedAt != null && DateUtils.nowAfter(this.lockedAt);
+    }
 
-@PreUpdate
-public void setUpdatedAt() {
-    this.updatedAt = LocalDateTime.now();
-}
+    @PrePersist
+    public void setCreatedAt() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void setUpdatedAt() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }
