@@ -1,4 +1,31 @@
 package cl.gendigital.gendeporte.users.core.entities.persistence;
 
-public class UserPersistence {
+
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+public class UserPersistence extends PersistenceBase{
+
+    private String username;
+    private String email;
+    private String password;
+    private LocalDateTime passwordResetAt;
+
+    public UserPersistence(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
+    public UserPersistence merge(UserPersistence another) {
+        return new UserPersistence(
+                another.getUsername() != null ? another.getUsername() : getUsername(),
+                another.getEmail() != null ? another.getEmail() : getEmail(),
+                another.getPassword() != null ? another.getPassword() : getPassword()
+        );
+    }
 }

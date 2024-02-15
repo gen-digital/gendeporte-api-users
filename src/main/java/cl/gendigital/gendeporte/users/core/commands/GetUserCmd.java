@@ -8,8 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class CreateUserCmd {
+public class GetUserCmd {
     private final String username;
-    private final String password;
-    private final String email;
 }
