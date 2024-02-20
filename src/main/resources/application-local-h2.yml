@@ -1,10 +1,9 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:gendeporte-api;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:mem:gendeporte-api-users;DB_CLOSE_ON_EXIT=FALSE
     username: sa
     password:
     driver-class-name: org.h2.Driver
-    initialization-mode: always
   jpa:
     properties:
       hibernate:
@@ -14,6 +13,9 @@ spring:
           import_files: sql_imports/06_user.sql
           dialect: org.hibernate.dialect.H2Dialect
         show_sql: true
+  sql:
+    init:
+      mode: always
 debug: false
 
 # Logging

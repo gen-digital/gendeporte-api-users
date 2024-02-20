@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User extends EntityBase {
     private static final long serialVersionUID = -5731260521355518321L;
 

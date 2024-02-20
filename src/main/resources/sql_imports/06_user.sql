@@ -1,23 +1,2 @@
-INSERT INTO user (username, password, email, created_at, updated_at, enabled_at, disabled_at) VALUES
-('admin', '$2a$10$v5IwV21.f/4HoO.sqH1zL.SbxdnGquMUkcKU79.3YLURG2veJIugi', 'admin.gosport@smartwaresolutions.cl', NOW(), NOW(), NOW(), null),
-('cmartinez', '$2a$10$MBNqejAi2ElcJU6p0k/Y5e1PAJLkkOC10Tp0JVx133R/v7rBP/NzO', 'carlos.martinez@smartwaresolutions.cl', NOW(), NOW(), NOW(), null),
-('jrodriguez', '$2a$10$GDjoNsTDWyyagO/ulRylhuM05eoX1IwpTMJN6Rt/NMaXeEFZ335.a', 'jonathan.rodriguez@smartwaresolutions.cl', NOW(), NOW(), NOW(), null),
-('jsilva', '$2a$10$XH3O0InwRaXMycOzjuKFxevMrJj0Rc5kJz8eqVGMLIgFkXUjB9HBS', 'jorge.silva@smartwaresolutions.cl', NOW(), NOW(), NOW(), null),
-('drosas', '$2a$10$XH3O0InwRaXMycOzjuKFxevMrJj0Rc5kJz8eqVGMLIgFkXUjB9HBS', 'darwin.rosas@smartwaresolutions.cl', NOW(), NOW(), NOW(), null),
-/*('iparraguez', '$2a$10$XH3O0InwRaXMycOzjuKFxevMrJj0Rc5kJz8eqVGMLIgFkXUjB9HBS', 'ivan.parraguez@smartwaresolutions.cl', NOW(), NOW(), NOW(), null),*/
-/*('cvalderrama', '$2a$10$XH3O0InwRaXMycOzjuKFxevMrJj0Rc5kJz8eqVGMLIgFkXUjB9HBS', 'carolina.valderrama@smartwaresolutions.cl', NOW(), NOW(), NOW(), null),*/
-('ccarreno', '$2a$10$XH3O0InwRaXMycOzjuKFxevMrJj0Rc5kJz8eqVGMLIgFkXUjB9HBS', 'christian.carreno@smartwaresolutions.cl', NOW(), NOW(), NOW(), null),
-('aribet', '$2a$10$XH3O0InwRaXMycOzjuKFxevMrJj0Rc5kJz8eqVGMLIgFkXUjB9HBS', 'andre.ribet@smartwaresolutions.cl', NOW(), NOW(), NOW(), null),
-('jaraya', '$2a$10$XH3O0InwRaXMycOzjuKFxevMrJj0Rc5kJz8eqVGMLIgFkXUjB9HBS', 'jaraya@sin-email.cl', NOW(), NOW(), NOW(), null),
-('jbadilla', '$2a$10$XH3O0InwRaXMycOzjuKFxevMrJj0Rc5kJz8eqVGMLIgFkXUjB9HBS', 'jor.badilla@gmail.com', NOW(), NOW(), NOW(), null),
-('ctorres', '$2a$10$XH3O0InwRaXMycOzjuKFxevMrJj0Rc5kJz8eqVGMLIgFkXUjB9HBS', 'carlostorrescastillo@gmail.com', NOW(), NOW(), NOW(), null),
-('jarias', '$2a$10$XH3O0InwRaXMycOzjuKFxevMrJj0Rc5kJz8eqVGMLIgFkXUjB9HBS', 'josetabilo2019@gmail.com', NOW(), NOW(), NOW(), null),
-('fbarrera', '$2a$10$XH3O0InwRaXMycOzjuKFxevMrJj0Rc5kJz8eqVGMLIgFkXUjB9HBS', 'febave2006@gmail.com', NOW(), NOW(), NOW(), null),
-/**('lbravo', '$2a$10$XH3O0InwRaXMycOzjuKFxevMrJj0Rc5kJz8eqVGMLIgFkXUjB9HBS', 'luis.bravo@smartwaresolutions.cl', NOW(), NOW(), NOW(), null),**/
-('invitado', '$2a$10$A3F7nbdGgW9Vjohroipm4uzljihYSYM/XyKF5PJ/bobSD49.QrRvm', 'invitado@gmail.com', NOW(), NOW(), NOW(), null),
-('adminasc', '$2a$10$A3F7nbdGgW9Vjohroipm4uzljihYSYM/XyKF5PJ/bobSD49.QrRvm', 'adminasc@gmail.com', NOW(), NOW(), NOW(), null),
-('entrenador', '$2a$10$A3F7nbdGgW9Vjohroipm4uzljihYSYM/XyKF5PJ/bobSD49.QrRvm', 'entrenador@gmail.com', NOW(), NOW(), NOW(), null),
-('dirigente', '$2a$10$A3F7nbdGgW9Vjohroipm4uzljihYSYM/XyKF5PJ/bobSD49.QrRvm', 'dirigente@gmail.com', NOW(), NOW(), NOW(), null),
-('hincha', '$2a$10$A3F7nbdGgW9Vjohroipm4uzljihYSYM/XyKF5PJ/bobSD49.QrRvm', 'hincha@gmail.com', NOW(), NOW(), NOW(), null),
-('turno', '$2a$10$A3F7nbdGgW9Vjohroipm4uzljihYSYM/XyKF5PJ/bobSD49.QrRvm', 'turno@gmail.com', NOW(), NOW(), NOW(), null),
-('merlin', '$2a$10$KkYuATCAWSeOUBkgxVMdieO9x3Z1H6Qbudl3nanasRmUMmNYEVG5a', 'martinlucianofonsecarubio@gmail.com', NOW(), NOW(), NOW(), null);
+INSERT INTO users (username, password, email, created_at, updated_at, enabled_at) VALUES
+('merlin', '$2a$10$KkYuATCAWSeOUBkgxVMdieO9x3Z1H6Qbudl3nanasRmUMmNYEVG5a', 'martinlucianofonsecarubio@gmail.com', NOW(), NOW(), NOW());
