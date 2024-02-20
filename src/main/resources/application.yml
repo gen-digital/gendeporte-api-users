@@ -3,4 +3,5 @@ application:
   version: @project.version@
 
 server:
-  port: ${PORT:8443}
+  port: ${PORT:8080}
+

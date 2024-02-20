@@ -3,6 +3,7 @@ package cl.gendigital.gendeporte.users.api.endpoint;
 import cl.gendigital.gendeporte.users.api.request.user.PostNewUserRequest;
 import cl.gendigital.gendeporte.users.core.commands.CreateUserCmd;
 import cl.gendigital.gendeporte.users.core.commands.GetUserCmd;
+
 import cl.gendigital.gendeporte.users.core.entities.domain.user.User;
 import cl.gendigital.gendeporte.users.core.port.services.UserServicePort;
 import lombok.RequiredArgsConstructor;
@@ -36,4 +37,5 @@ public class UsersControllers {
         return new CreateUserCmd(
                 request.getUsername(), request.getPassword(), request.getEmail());
     }
+
 }

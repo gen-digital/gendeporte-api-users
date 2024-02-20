@@ -17,9 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Getter
 @Setter
@@ -51,16 +49,6 @@ public class User extends EntityBase {
     public boolean mustChangePassword() {
         return this.passwordResetAt != null && DateUtils.beforeNow(this.passwordResetAt);
     }
-    /*public void add(Assignment assignment) {
-        assignments.add(assignment);
-    }*/
-
-    /*public List<Role> getRoles() {
-        return assignments
-                .stream()
-                .map(Assignment::getRole)
-                .collect(Collectors.toList());
-    }*/
 
     public String getFullname() {
         return getUsername().concat(" (").concat(getEmail()).concat(")");
