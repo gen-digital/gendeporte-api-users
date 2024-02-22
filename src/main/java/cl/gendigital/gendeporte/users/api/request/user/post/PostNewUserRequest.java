@@ -1,8 +1,9 @@
 package cl.gendigital.gendeporte.users.api.request.user;
 
+import com.sun.istack.NotNull;
 import lombok.*;
 
-import java.util.Set;
+import javax.validation.constraints.Email;
 
 
 @Getter
@@ -12,9 +13,10 @@ import java.util.Set;
 @AllArgsConstructor
 public class PostNewUserRequest {
 
+    @NotNull
     private String username;
-
+    @NotNull
     private String password;
-
+    @Email
     private String email;
 }
