@@ -10,5 +10,4 @@ import java.util.Set;
 public class UserResponse {
     private final String username;
     private final String email;
-    private final Set<String> authorities;
 }
