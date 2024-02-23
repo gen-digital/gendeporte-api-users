@@ -24,16 +24,19 @@ public class UserServiceAdapter implements UserServicePort {
 
     @Override
     public Integer createUser(CreateUserCmd cmd) {
-        return userPersistencePort.save(toPersistence(cmd));
+        if(userPersistencePort.findByUsername(cmd.getUsername()).isPresent()){
+            return null;
+        } else {
+            return userPersistencePort.save(toPersistence(cmd));
+        }
     }
 
     @Override
     public User getUser(GetUserCmd cmd) {
-        var username = cmd.getUsername();
         return userPersistencePort
-                .findByUsername(username)
+                .findByUsername(cmd.getUsername())
                 .map(User::new)
-                .orElseThrow(()-> new RuntimeException("not found"));
+                .orElse(null);
     }
 
 }

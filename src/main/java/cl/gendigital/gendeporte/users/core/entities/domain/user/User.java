@@ -18,7 +18,6 @@ public class User extends DomainBase {
     private final String username;
     private final String email;
     private final String password;
-    private final LocalDateTime passwordResetAt;
 
     public User(UserPersistence userPersistence) {
         this.username = userPersistence.getUsername();
@@ -30,7 +29,6 @@ public class User extends DomainBase {
         this.lockedAt = userPersistence.getLockedAt();
         this.enabledAt = userPersistence.getEnabledAt();
         this.disabledAt = userPersistence.getDisabledAt();
-        this.passwordResetAt = userPersistence.getPasswordResetAt();
     }
 
     public boolean isExpired() {
@@ -47,7 +45,4 @@ public class User extends DomainBase {
         return enabledAt != null && enabledAt.isBefore(LocalDateTime.now());
     }
 
-    public boolean mustChangePassword() {
-        return passwordResetAt != null && passwordResetAt.isBefore(LocalDateTime.now());
-    }
 }

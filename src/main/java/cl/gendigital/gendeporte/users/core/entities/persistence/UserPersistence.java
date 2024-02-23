@@ -13,7 +13,7 @@ public class UserPersistence extends PersistenceBase{
     private String username;
     private String email;
     private String password;
-    private LocalDateTime passwordResetAt;
+    private LocalDateTime createdAt;
 
     public UserPersistence(String username, String email, String password) {
         this.username = username;

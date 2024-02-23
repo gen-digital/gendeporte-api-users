@@ -1,4 +1,4 @@
-package cl.gendigital.gendeporte.users.api.request.user;
+package cl.gendigital.gendeporte.users.api.request.user.post;
 
 import com.sun.istack.NotNull;
 import lombok.*;
@@ -19,4 +19,5 @@ public class PostNewUserRequest {
     private String password;
     @Email
     private String email;
+    
 }

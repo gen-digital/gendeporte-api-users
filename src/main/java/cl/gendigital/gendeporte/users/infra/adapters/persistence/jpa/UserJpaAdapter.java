@@ -11,7 +11,7 @@ import java.util.Optional;
 
 
 @RequiredArgsConstructor
-public class UserAdapter implements UserPersistencePort {
+public class UserJpaAdapter implements UserPersistencePort {
     private final UserRepository userRepository;
 
     @Override
