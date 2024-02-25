@@ -18,11 +18,13 @@ public class User extends DomainBase {
     private final String username;
     private final String email;
     private final String password;
+    private final String validationCode;
 
     public User(UserPersistence userPersistence) {
         this.username = userPersistence.getUsername();
         this.email = userPersistence.getEmail();
         this.password = userPersistence.getPassword();
+        this.validationCode = userPersistence.getValidationCode();
         this.createdAt = userPersistence.getCreatedAt();
         this.updatedAt = userPersistence.getUpdatedAt();
         this.expiredAt = userPersistence.getExpiredAt();

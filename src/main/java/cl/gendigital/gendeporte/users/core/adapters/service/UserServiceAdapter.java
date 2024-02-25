@@ -2,6 +2,7 @@ package cl.gendigital.gendeporte.users.core.adapters.service;
 
 import cl.gendigital.gendeporte.users.core.commands.CreateUserCmd;
 import cl.gendigital.gendeporte.users.core.commands.GetUserCmd;
+import cl.gendigital.gendeporte.users.core.commands.VerifyUserCmd;
 import cl.gendigital.gendeporte.users.core.entities.domain.user.User;
 import cl.gendigital.gendeporte.users.core.entities.persistence.UserPersistence;
 import cl.gendigital.gendeporte.users.core.port.persistence.UserPersistencePort;
@@ -22,6 +23,10 @@ public class UserServiceAdapter implements UserServicePort {
         return userPersistence;
     }
 
+    private UserPersistence toPersistance(VerifyUserCmd cmd){
+        return new UserPersistence(cmd.getUsername(), cmd.getValidationCode());
+    }
+
     @Override
     public Integer createUser(CreateUserCmd cmd) {
         if(userPersistencePort.findByUsername(cmd.getUsername()).isPresent()){
@@ -39,4 +44,13 @@ public class UserServiceAdapter implements UserServicePort {
                 .orElse(null);
     }
 
+    @Override
+    public User verifyUser(VerifyUserCmd cmd){
+        var foundUser =
+                userPersistencePort
+                        .findByUsername(cmd.getUsername())
+                        .orElseThrow(()-> null);
+        var verifiedUser = userPersistencePort.verify(toPersistance(cmd),foundUser);
+        return new User(verifiedUser);
+    }
 }

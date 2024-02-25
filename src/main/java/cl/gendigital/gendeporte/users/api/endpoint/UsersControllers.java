@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDateTime;
+
 @RequestMapping("/users")
 @RestController
 @RequiredArgsConstructor
@@ -54,6 +56,7 @@ public class UsersControllers {
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .createdAt(user.getCreatedAt())
+                .validationCode(user.getValidationCode())
                 .build();
     }
 
