@@ -26,6 +26,7 @@ public class PersistenceMapper {
         userPersistence.setEnabledAt(user.getEnabledAt());
         userPersistence.setDisabledAt(user.getDisabledAt());
         userPersistence.setLockedAt(user.getLockedAt());
+        userPersistence.setValidationCode(user.getValidationCode());
         return userPersistence;
     }
 }

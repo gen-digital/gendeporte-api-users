@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 @RequiredArgsConstructor
@@ -29,7 +30,16 @@ public class UserJpaAdapter implements UserPersistencePort {
     @Override
     @Transactional
     public Integer save(UserPersistence userPersistence) {
-        userPersistence.setValidationCode("hola");
+        // El banco de caracteres
+        String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        // La cadena en donde iremos agregando un carácter aleatorio
+        String cadena = "";
+        for (int x = 0; x < 10; x++) {
+            int indiceAleatorio = ThreadLocalRandom.current().nextInt(5,banco.length());
+            char caracterAleatorio = banco.charAt(indiceAleatorio);
+            cadena += caracterAleatorio;
+        }
+        userPersistence.setValidationCode(cadena);
         var savedUserEntity =
                 userRepository.save(PersistenceMapper.persistenceToEntity(userPersistence));
         return savedUserEntity.getId();
