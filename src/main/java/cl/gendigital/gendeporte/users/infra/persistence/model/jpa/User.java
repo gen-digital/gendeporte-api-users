@@ -9,13 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 
@@ -45,6 +39,19 @@ public class User extends EntityBase {
 
     @Column(name = "validation_code", length = 100)
     private String validationCode;
+
+    @Column(name="first_name", length = 100)
+    private String firstName;
+
+    @Column(name="last_name",length = 100)
+    private String lastName;
+
+    @Column(name="phone",length = 100)
+    private String phone;
+
+    @Column(name = "address",length = 100)
+    private String address;
+
 
     public boolean mustChangePassword() {
         return this.passwordResetAt != null && DateUtils.beforeNow(this.passwordResetAt);
