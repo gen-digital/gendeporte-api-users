@@ -50,7 +50,11 @@ public class UserServiceAdapter implements UserServicePort {
                 userPersistencePort
                         .findByUsername(cmd.getUsername())
                         .orElseThrow(()-> null);
-        var verifiedUser = userPersistencePort.verify(toPersistance(cmd),foundUser);
-        return new User(verifiedUser);
+        if( cmd.getValidationCode().equals(foundUser.getValidationCode())) {
+            var verifiedUser = userPersistencePort.verify(toPersistance(cmd),foundUser);
+            return new User(verifiedUser);
+        }else{
+            return null;
+        }
     }
 }

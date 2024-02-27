@@ -1,12 +1,15 @@
 package cl.gendigital.gendeporte.users.api.endpoint;
 
 import cl.gendigital.gendeporte.users.api.request.user.post.PostNewUserRequest;
+import cl.gendigital.gendeporte.users.api.request.user.post.PostVerifyUserRequest;
 import cl.gendigital.gendeporte.users.api.responses.base.BaseResponse;
 import cl.gendigital.gendeporte.users.api.responses.base.MessageResponse;
 import cl.gendigital.gendeporte.users.api.responses.user.get.GetUserResponse;
 import cl.gendigital.gendeporte.users.api.responses.user.post.PostNewUserResponse;
+import cl.gendigital.gendeporte.users.api.responses.user.post.PostVerifyUserResponse;
 import cl.gendigital.gendeporte.users.core.commands.CreateUserCmd;
 import cl.gendigital.gendeporte.users.core.commands.GetUserCmd;
+import cl.gendigital.gendeporte.users.core.commands.VerifyUserCmd;
 import cl.gendigital.gendeporte.users.core.entities.domain.user.User;
 import cl.gendigital.gendeporte.users.core.port.services.UserServicePort;
 
@@ -35,14 +38,27 @@ public class UsersControllers {
     @GetMapping("/search-users")
     public ResponseEntity<BaseResponse> getUser(@RequestParam String username){
         User user = userService.getUser(new GetUserCmd(username));
-        return ResponseEntity.ok(toResponse(user,"201","Usuario Encontrado"));
+        return ResponseEntity.status(HttpStatus.OK).body(toResponse(user,"200","User founded"));
 
     }
+
+    @PostMapping("/verify-users")
+    public ResponseEntity<BaseResponse> verifyUser(@RequestBody PostVerifyUserRequest request){
+        User user = userService.verifyUser(toCmd(request));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(toResponser(user,"200","hola"));
+    }
+
 
     private CreateUserCmd toCmd(PostNewUserRequest request) {
         return new CreateUserCmd(
                 request.getUsername(), request.getPassword(), request.getEmail());
     }
+
+    private VerifyUserCmd toCmd(PostVerifyUserRequest request){
+        return new VerifyUserCmd(
+                request.getUsername(), request.getValidationCode());
+    }
+
 
     private BaseResponse toResponse(User user, String code, String message) {
         return BaseResponse.builder()
@@ -51,12 +67,27 @@ public class UsersControllers {
                 .build();
     }
 
+    private BaseResponse toResponser(User user, String code, String message) {
+        return BaseResponse.builder()
+                .success(new MessageResponse(code, message))
+                .data(toResponser(user))
+                .build();
+    }
+    private PostVerifyUserResponse toResponser(User user){
+        return PostVerifyUserResponse
+                .builder()
+                .username(user.getUsername())
+                .enabled_at(user.getEnabledAt())
+                .build();
+    }
+
     private GetUserResponse toResponse(User user) {
         return GetUserResponse.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .createdAt(user.getCreatedAt())
                 .validationCode(user.getValidationCode())
+                .createdAt(user.getCreatedAt())
+                .enabledAt(user.getEnabledAt())
                 .build();
     }
 
@@ -66,5 +97,6 @@ public class UsersControllers {
                 .data(new PostNewUserResponse(userId))
                 .build();
     }
+
 
 }

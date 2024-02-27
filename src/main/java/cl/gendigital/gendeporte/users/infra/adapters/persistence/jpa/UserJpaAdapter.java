@@ -48,26 +48,18 @@ public class UserJpaAdapter implements UserPersistencePort {
 
     @Override
     @Transactional
-    public UserPersistence verify(UserPersistence user, UserPersistence found){
-        var verifyUser = found.merge(user);
-        var foundUser = verify(verifyUser);
-        return verifyUser;
+    public UserPersistence verify(UserPersistence notVerifiedUser,UserPersistence found){
+        var userEnabled = found.merge(notVerifiedUser);
+        var verify = verify(userEnabled);
+        return userEnabled;
     }
 
-
-
-
-    private User verify(UserPersistence notVerifiedUser){
-        var foundUser =
-            userRepository
-                    .findByUsername(notVerifiedUser.getUsername())
-                    .orElseThrow(()-> null);
-        foundUser.setValidationCode(notVerifiedUser.getValidationCode());
-        foundUser.setEnabledAt(notVerifiedUser.getEnabledAt());
-        userRepository.save(foundUser);
-        return foundUser;
+    private User verify(UserPersistence userEnabled){
+        var found = userRepository
+                .findByUsername(userEnabled.getUsername())
+                .orElseThrow(() -> null);
+        found.setEnabledAt(LocalDateTime.now());
+        return found;
     }
-
-
 
 }

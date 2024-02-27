@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class GetUserResponse {
     private String username;
     private String email;
-    private LocalDateTime createdAt;
     private String validationCode;
+    private LocalDateTime enabledAt;
+    private LocalDateTime createdAt;
 }
