@@ -2,14 +2,13 @@ package cl.gendigital.gendeporte.users.core.adapters.service;
 
 import cl.gendigital.gendeporte.users.core.commands.CreateUserCmd;
 import cl.gendigital.gendeporte.users.core.commands.GetUserCmd;
+import cl.gendigital.gendeporte.users.core.commands.MoreInformationUserCmd;
 import cl.gendigital.gendeporte.users.core.commands.VerifyUserCmd;
 import cl.gendigital.gendeporte.users.core.entities.domain.user.User;
 import cl.gendigital.gendeporte.users.core.entities.persistence.UserPersistence;
 import cl.gendigital.gendeporte.users.core.port.persistence.UserPersistencePort;
 import cl.gendigital.gendeporte.users.core.port.services.UserServicePort;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public class UserServiceAdapter implements UserServicePort {
@@ -23,13 +22,17 @@ public class UserServiceAdapter implements UserServicePort {
         return userPersistence;
     }
 
-    private UserPersistence toPersistance(VerifyUserCmd cmd){
+    private UserPersistence toPersistance(VerifyUserCmd cmd) {
         return new UserPersistence(cmd.getUsername(), cmd.getValidationCode());
+    }
+
+    private UserPersistence toPersistance(MoreInformationUserCmd cmd) {
+        return new UserPersistence(cmd.getUsername(), cmd.getFirstName(), cmd.getLastName(), cmd.getPhone(), cmd.getAddress());
     }
 
     @Override
     public Integer createUser(CreateUserCmd cmd) {
-        if(userPersistencePort.findByUsername(cmd.getUsername()).isPresent()){
+        if (userPersistencePort.findByUsername(cmd.getUsername()).isPresent()) {
             return null;
         } else {
             return userPersistencePort.save(toPersistence(cmd));
@@ -45,16 +48,29 @@ public class UserServiceAdapter implements UserServicePort {
     }
 
     @Override
-    public User verifyUser(VerifyUserCmd cmd){
+    public User verifyUser(VerifyUserCmd cmd) {
         var foundUser =
                 userPersistencePort
                         .findByUsername(cmd.getUsername())
-                        .orElseThrow(()-> null);
-        if( cmd.getValidationCode().equals(foundUser.getValidationCode())) {
-            var verifiedUser = userPersistencePort.verify(toPersistance(cmd),foundUser);
+                        .orElseThrow(() -> null);
+        if (cmd.getValidationCode().equals(foundUser.getValidationCode())) {
+            var verifiedUser = userPersistencePort.verify(toPersistance(cmd), foundUser);
             return new User(verifiedUser);
-        }else{
+        } else {
             return null;
         }
+    }
+
+    @Override
+    public User moreInfo(MoreInformationUserCmd cmd) {
+        var foundUser =
+                userPersistencePort
+                        .findByUsername(cmd.getUsername())
+                        .orElseThrow(() -> null);
+        if (userPersistencePort.findByUsername(cmd.getUsername()).isPresent() && foundUser.getEnabledAt()!= null) {
+            var userInfo = userPersistencePort.moreInformation(toPersistance(cmd));
+            return new User(userInfo);
+        }
+        return null;
     }
 }

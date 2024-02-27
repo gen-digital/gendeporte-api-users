@@ -1,14 +1,17 @@
 package cl.gendigital.gendeporte.users.api.endpoint;
 
+import cl.gendigital.gendeporte.users.api.request.user.post.PostMoreInfoUserRequest;
 import cl.gendigital.gendeporte.users.api.request.user.post.PostNewUserRequest;
 import cl.gendigital.gendeporte.users.api.request.user.post.PostVerifyUserRequest;
 import cl.gendigital.gendeporte.users.api.responses.base.BaseResponse;
 import cl.gendigital.gendeporte.users.api.responses.base.MessageResponse;
 import cl.gendigital.gendeporte.users.api.responses.user.get.GetUserResponse;
+import cl.gendigital.gendeporte.users.api.responses.user.post.PostMoreInfoUserResponse;
 import cl.gendigital.gendeporte.users.api.responses.user.post.PostNewUserResponse;
 import cl.gendigital.gendeporte.users.api.responses.user.post.PostVerifyUserResponse;
 import cl.gendigital.gendeporte.users.core.commands.CreateUserCmd;
 import cl.gendigital.gendeporte.users.core.commands.GetUserCmd;
+import cl.gendigital.gendeporte.users.core.commands.MoreInformationUserCmd;
 import cl.gendigital.gendeporte.users.core.commands.VerifyUserCmd;
 import cl.gendigital.gendeporte.users.core.entities.domain.user.User;
 import cl.gendigital.gendeporte.users.core.port.services.UserServicePort;
@@ -45,20 +48,32 @@ public class UsersControllers {
     @PostMapping("/verify-users")
     public ResponseEntity<BaseResponse> verifyUser(@RequestBody PostVerifyUserRequest request){
         User user = userService.verifyUser(toCmd(request));
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(toResponser(user,"200","hola"));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(toResponse(user,"200","user verified"));
     }
 
+    @PostMapping("/moreInfo-users")
+    public ResponseEntity<BaseResponse> moreInformation(@RequestBody PostMoreInfoUserRequest request){
+        User user = userService.moreInfo(toCmd(request));
+        return ResponseEntity.status(HttpStatus.OK).body(toResponse(user,"200","User updated information"));
+    }
 
     private CreateUserCmd toCmd(PostNewUserRequest request) {
         return new CreateUserCmd(
-                request.getUsername(), request.getPassword(), request.getEmail());
+                request.getUsername(), request.getPassword(), request.getEmail()
+        );
     }
 
     private VerifyUserCmd toCmd(PostVerifyUserRequest request){
         return new VerifyUserCmd(
-                request.getUsername(), request.getValidationCode());
+                request.getUsername(), request.getValidationCode()
+        );
     }
 
+    private MoreInformationUserCmd toCmd(PostMoreInfoUserRequest request){
+        return new MoreInformationUserCmd(
+                request.getUsername(), request.getFirstName(), request.getFirstName(),request.getPhone(), request.getAddress()
+        );
+    }
 
     private BaseResponse toResponse(User user, String code, String message) {
         return BaseResponse.builder()
@@ -67,17 +82,12 @@ public class UsersControllers {
                 .build();
     }
 
-    private BaseResponse toResponser(User user, String code, String message) {
-        return BaseResponse.builder()
-                .success(new MessageResponse(code, message))
-                .data(toResponser(user))
-                .build();
-    }
+
     private PostVerifyUserResponse toResponser(User user){
         return PostVerifyUserResponse
                 .builder()
                 .username(user.getUsername())
-                .enabled_at(user.getEnabledAt())
+                .enabledAt(user.getEnabledAt())
                 .build();
     }
 
@@ -88,6 +98,8 @@ public class UsersControllers {
                 .validationCode(user.getValidationCode())
                 .createdAt(user.getCreatedAt())
                 .enabledAt(user.getEnabledAt())
+                .updatedAt(user.getUpdatedAt())
+                .address(user.getAddress())
                 .build();
     }
 
@@ -98,5 +110,13 @@ public class UsersControllers {
                 .build();
     }
 
+    private PostMoreInfoUserResponse toResponseMore(User user){
+        return PostMoreInfoUserResponse
+                .builder()
+                .username(user.getUsername())
+                .uptatedAt(user.getUpdatedAt())
+                .build();
+
+    }
 
 }

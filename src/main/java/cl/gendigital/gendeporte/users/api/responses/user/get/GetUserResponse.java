@@ -13,4 +13,6 @@ public class GetUserResponse {
     private String validationCode;
     private LocalDateTime enabledAt;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private String address;
 }

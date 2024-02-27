@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -45,6 +44,20 @@ public class UserJpaAdapter implements UserPersistencePort {
         return savedUserEntity.getId();
     }
 
+    @Override
+    @Transactional
+    public UserPersistence moreInformation(UserPersistence user){
+        var userInfo = userRepository
+                        .findByUsername(user.getUsername())
+                        .orElseThrow(()->null);
+        userInfo.setPhone(user.getPhone());
+        userInfo.setAddress(user.getAddress());
+        userInfo.setLastName(user.getLastName());
+        userInfo.setFirstName(user.getFirstName());
+        userInfo.setUpdatedAt(LocalDateTime.now());
+        userRepository.save(userInfo);
+        return PersistenceMapper.entityToPersistence(userInfo);
+    }
 
     @Override
     @Transactional
@@ -56,10 +69,12 @@ public class UserJpaAdapter implements UserPersistencePort {
 
     private User verify(UserPersistence userEnabled){
         var found = userRepository
-                .findByUsername(userEnabled.getUsername())
-                .orElseThrow(() -> null);
+                    .findByUsername(userEnabled.getUsername())
+                    .orElseThrow(() -> null);
         found.setEnabledAt(LocalDateTime.now());
         return found;
     }
+
+
 
 }

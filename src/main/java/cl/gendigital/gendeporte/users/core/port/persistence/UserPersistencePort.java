@@ -18,6 +18,8 @@ public interface UserPersistencePort {
 
     Optional<UserPersistence> findByEmail(String email);
 
+    UserPersistence moreInformation(UserPersistence user);
+
     UserPersistence verify(UserPersistence user, UserPersistence found);
 
 }
