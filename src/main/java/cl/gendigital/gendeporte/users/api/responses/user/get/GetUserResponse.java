@@ -11,8 +11,8 @@ public class GetUserResponse {
     private String username;
     private String email;
     private String validationCode;
-    private LocalDateTime enabledAt;
     private LocalDateTime createdAt;
+    private LocalDateTime enabledAt;
     private LocalDateTime updatedAt;
     private String address;
 }

@@ -48,13 +48,13 @@ public class UsersControllers {
     @PostMapping("/verify-users")
     public ResponseEntity<BaseResponse> verifyUser(@RequestBody PostVerifyUserRequest request){
         User user = userService.verifyUser(toCmd(request));
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(toResponse(user,"200","user verified"));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(toResponseVerify(user,"200","User verified"));
     }
 
     @PostMapping("/moreInfo-users")
     public ResponseEntity<BaseResponse> moreInformation(@RequestBody PostMoreInfoUserRequest request){
         User user = userService.moreInfo(toCmd(request));
-        return ResponseEntity.status(HttpStatus.OK).body(toResponse(user,"200","User updated information"));
+        return ResponseEntity.status(HttpStatus.OK).body(toResponseInfo(user,"200","User updated information"));
     }
 
     private CreateUserCmd toCmd(PostNewUserRequest request) {
@@ -81,6 +81,24 @@ public class UsersControllers {
                 .data(toResponse(user))
                 .build();
     }
+    private BaseResponse toResponse(Integer userId) {
+        return BaseResponse.builder()
+                .success(new MessageResponse("C00", "Success user creation"))
+                .data(new PostNewUserResponse(userId))
+                .build();
+    }
+    private BaseResponse toResponseVerify(User user,String code, String message){
+        return BaseResponse.builder()
+                .success(new MessageResponse(code, message))
+                .data(toResponser(user))
+                .build();
+    }
+    private BaseResponse toResponseInfo(User user,String code, String message){
+        return BaseResponse.builder()
+                .success(new MessageResponse(code, message))
+                .data(toResponseMore(user))
+                .build();
+    }
 
 
     private PostVerifyUserResponse toResponser(User user){
@@ -103,12 +121,7 @@ public class UsersControllers {
                 .build();
     }
 
-    private BaseResponse toResponse(Integer userId) {
-        return BaseResponse.builder()
-                .success(new MessageResponse("C00", "Success user creation"))
-                .data(new PostNewUserResponse(userId))
-                .build();
-    }
+
 
     private PostMoreInfoUserResponse toResponseMore(User user){
         return PostMoreInfoUserResponse

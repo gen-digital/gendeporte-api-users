@@ -10,6 +10,8 @@ import cl.gendigital.gendeporte.users.core.port.persistence.UserPersistencePort;
 import cl.gendigital.gendeporte.users.core.port.services.UserServicePort;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @RequiredArgsConstructor
 public class UserServiceAdapter implements UserServicePort {
 
@@ -55,6 +57,7 @@ public class UserServiceAdapter implements UserServicePort {
                         .orElseThrow(() -> null);
         if (cmd.getValidationCode().equals(foundUser.getValidationCode())) {
             var verifiedUser = userPersistencePort.verify(toPersistance(cmd), foundUser);
+            verifiedUser.setEnabledAt(LocalDateTime.now());
             return new User(verifiedUser);
         } else {
             return null;
