@@ -70,7 +70,7 @@ public class UserServiceAdapter implements UserServicePort {
                 userPersistencePort
                         .findByUsername(cmd.getUsername())
                         .orElseThrow(() -> null);
-        if (userPersistencePort.findByUsername(cmd.getUsername()).isPresent() && foundUser.getEnabledAt()!= null) {
+        if (foundUser.getEnabledAt()!= null) {
             var userInfo = userPersistencePort.moreInformation(toPersistance(cmd));
             return new User(userInfo);
         }
