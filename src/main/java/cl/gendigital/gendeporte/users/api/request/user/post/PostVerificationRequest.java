@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostVerifyUserRequest {
+public class PostVerifificationRequest {
     @NotNull
     private String username;
     @NotNull

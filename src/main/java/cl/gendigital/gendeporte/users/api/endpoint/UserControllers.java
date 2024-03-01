@@ -16,15 +16,11 @@ import cl.gendigital.gendeporte.users.core.commands.VerifyUserCmd;
 import cl.gendigital.gendeporte.users.core.entities.domain.user.User;
 import cl.gendigital.gendeporte.users.core.port.services.UserServicePort;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import java.time.LocalDateTime;
 
 @RequestMapping("/users")
 @RestController
@@ -32,7 +28,7 @@ import java.time.LocalDateTime;
 public class UsersControllers {
 
     private final UserServicePort userService;
-    @PostMapping("/create-users")
+    @PostMapping()
     public ResponseEntity<BaseResponse> createUser(@RequestBody @Validated PostNewUserRequest request){
         Integer userId = userService.createUser(toCmd(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(userId));
@@ -45,7 +41,7 @@ public class UsersControllers {
 
     }
 
-    @PostMapping("/verify-users")
+    @PostMapping("/verify")
     public ResponseEntity<BaseResponse> verifyUser(@RequestBody PostVerifyUserRequest request){
         User user = userService.verifyUser(toCmd(request));
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(toResponseVerify(user,"200","User verified"));
