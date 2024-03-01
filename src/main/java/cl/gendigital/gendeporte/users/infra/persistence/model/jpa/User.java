@@ -46,7 +46,7 @@ public class User extends EntityBase {
     @Column(name="last_name",length = 100)
     private String lastName;
 
-    @Column(name="phone",length = 100)
+    @Column(name="phone",length = 50)
     private String phone;
 
     @Column(name = "address",length = 100)
@@ -65,4 +65,5 @@ public class User extends EntityBase {
     public String getName() {
         return getUsername();
     }
-    }
+
+}

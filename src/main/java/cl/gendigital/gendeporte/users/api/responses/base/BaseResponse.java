@@ -10,8 +10,7 @@ import lombok.experimental.SuperBuilder;
 import java.time.LocalDateTime;
 
 @Getter
-@SuperBuilder
-@RequiredArgsConstructor
+@Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseResponse {
     @Builder.Default

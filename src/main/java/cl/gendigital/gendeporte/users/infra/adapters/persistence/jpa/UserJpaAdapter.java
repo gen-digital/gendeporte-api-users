@@ -1,21 +1,23 @@
 package cl.gendigital.gendeporte.users.infra.adapters.persistence.jpa;
 
 import cl.gendigital.gendeporte.users.core.entities.persistence.UserPersistence;
+import cl.gendigital.gendeporte.users.core.exceptions.user.persistence.UserNotExist;
 import cl.gendigital.gendeporte.users.core.port.persistence.UserPersistencePort;
 import cl.gendigital.gendeporte.users.infra.persistence.model.jpa.User;
 import cl.gendigital.gendeporte.users.infra.persistence.repository.jpa.UserRepository;
+import cl.gendigital.gendeporte.users.infra.utils.UserUtils;
 import cl.gendigital.gendeporte.users.infra.utils.mapper.PersistenceMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.concurrent.ThreadLocalRandom;
 
 
 @RequiredArgsConstructor
 public class UserJpaAdapter implements UserPersistencePort {
     private final UserRepository userRepository;
+    private final UserUtils userUtils;
 
     @Override
     public Optional<UserPersistence> findByUsername(String username) {
@@ -27,18 +29,27 @@ public class UserJpaAdapter implements UserPersistencePort {
     }
 
     @Override
+    public boolean existByUsername(String username){
+        if(userRepository.existsByUsername(username)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    @Override
+    public boolean existByEmail(String email){
+        if(userRepository.existsByEmail(email)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+    @Override
     @Transactional
     public Integer save(UserPersistence userPersistence) {
-        // El banco de caracteres
-        String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        // La cadena en donde iremos agregando un carácter aleatorio
-        String cadena = "";
-        for (int x = 0; x < 10; x++) {
-            int indiceAleatorio = ThreadLocalRandom.current().nextInt(5,banco.length());
-            char caracterAleatorio = banco.charAt(indiceAleatorio);
-            cadena += caracterAleatorio;
-        }
-        userPersistence.setValidationCode(cadena);
+        userPersistence.setValidationCode(userUtils.validationCode());
         var savedUserEntity =
                 userRepository.save(PersistenceMapper.persistenceToEntity(userPersistence));
         return savedUserEntity.getId();
@@ -46,10 +57,10 @@ public class UserJpaAdapter implements UserPersistencePort {
 
     @Override
     @Transactional
-    public UserPersistence moreInformation(UserPersistence user){
+    public UserPersistence enrich(UserPersistence user){
         var userInfo = userRepository
                         .findByUsername(user.getUsername())
-                        .orElseThrow(()->null);
+                        .orElseThrow(()->new UserNotExist("user","username", user.getUsername()));
         userInfo.setPhone(user.getPhone());
         userInfo.setAddress(user.getAddress());
         userInfo.setLastName(user.getLastName());
@@ -70,7 +81,7 @@ public class UserJpaAdapter implements UserPersistencePort {
     private User verify(UserPersistence userEnabled){
         var found = userRepository
                     .findByUsername(userEnabled.getUsername())
-                    .orElseThrow(() -> null);
+                    .orElseThrow(() -> new UserNotExist("user","username",userEnabled.getUsername()));
         found.setEnabledAt(LocalDateTime.now());
         return found;
     }

@@ -1,18 +1,18 @@
 package cl.gendigital.gendeporte.users.api.endpoint;
 
-import cl.gendigital.gendeporte.users.api.request.user.post.PostMoreInfoUserRequest;
-import cl.gendigital.gendeporte.users.api.request.user.post.PostNewUserRequest;
-import cl.gendigital.gendeporte.users.api.request.user.post.PostVerifyUserRequest;
+import cl.gendigital.gendeporte.users.api.request.user.post.PostEnrichRequest;
+import cl.gendigital.gendeporte.users.api.request.user.post.PostCreateUserRequest;
+import cl.gendigital.gendeporte.users.api.request.user.post.PostVerificationRequest;
 import cl.gendigital.gendeporte.users.api.responses.base.BaseResponse;
 import cl.gendigital.gendeporte.users.api.responses.base.MessageResponse;
 import cl.gendigital.gendeporte.users.api.responses.user.get.GetUserResponse;
-import cl.gendigital.gendeporte.users.api.responses.user.post.PostMoreInfoUserResponse;
-import cl.gendigital.gendeporte.users.api.responses.user.post.PostNewUserResponse;
-import cl.gendigital.gendeporte.users.api.responses.user.post.PostVerifyUserResponse;
-import cl.gendigital.gendeporte.users.core.commands.CreateUserCmd;
-import cl.gendigital.gendeporte.users.core.commands.GetUserCmd;
-import cl.gendigital.gendeporte.users.core.commands.MoreInformationUserCmd;
-import cl.gendigital.gendeporte.users.core.commands.VerifyUserCmd;
+import cl.gendigital.gendeporte.users.api.responses.user.post.PostEnrichResponse;
+import cl.gendigital.gendeporte.users.api.responses.user.post.PostCreateUserResponse;
+import cl.gendigital.gendeporte.users.api.responses.user.post.PostVerificationResponse;
+import cl.gendigital.gendeporte.users.core.commands.user.CreateUserCmd;
+import cl.gendigital.gendeporte.users.core.commands.user.GetUserCmd;
+import cl.gendigital.gendeporte.users.core.commands.user.EnrichCmd;
+import cl.gendigital.gendeporte.users.core.commands.user.VerificationCmd;
 import cl.gendigital.gendeporte.users.core.entities.domain.user.User;
 import cl.gendigital.gendeporte.users.core.port.services.UserServicePort;
 
@@ -25,87 +25,67 @@ import org.springframework.http.ResponseEntity;
 @RequestMapping("/users")
 @RestController
 @RequiredArgsConstructor
-public class UsersControllers {
+public class UserControllers {
 
     private final UserServicePort userService;
     @PostMapping()
-    public ResponseEntity<BaseResponse> createUser(@RequestBody @Validated PostNewUserRequest request){
-        Integer userId = userService.createUser(toCmd(request));
-        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(userId));
+    public ResponseEntity<BaseResponse> createUser(@RequestBody @Validated PostCreateUserRequest request){
+        final Integer userId = userService.createUser(toCmd(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(toResponseCreate(userId,"200","User created"));
     }
 
-    @GetMapping("/search-users")
-    public ResponseEntity<BaseResponse> getUser(@RequestParam String username){
-        User user = userService.getUser(new GetUserCmd(username));
+    @GetMapping("/by-username/{username}")
+    public ResponseEntity<BaseResponse> getUser(@PathVariable String username){
+        final User user = userService.getUser(new GetUserCmd(username));
         return ResponseEntity.status(HttpStatus.OK).body(toResponse(user,"200","User founded"));
 
     }
 
-    @PostMapping("/verify")
-    public ResponseEntity<BaseResponse> verifyUser(@RequestBody PostVerifyUserRequest request){
-        User user = userService.verifyUser(toCmd(request));
+    @PatchMapping("/verification")
+    public ResponseEntity<BaseResponse> verifyUser(@RequestBody PostVerificationRequest request){
+        final User user = userService.verifyUser(toCmd(request));
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(toResponseVerify(user,"200","User verified"));
     }
 
-    @PostMapping("/moreInfo-users")
-    public ResponseEntity<BaseResponse> moreInformation(@RequestBody PostMoreInfoUserRequest request){
-        User user = userService.moreInfo(toCmd(request));
-        return ResponseEntity.status(HttpStatus.OK).body(toResponseInfo(user,"200","User updated information"));
+    @PatchMapping("/enrich")
+    public ResponseEntity<BaseResponse> enrich(@RequestBody PostEnrichRequest request){
+        final User user = userService.enrich(toCmd(request));
+        return ResponseEntity.status(HttpStatus.OK).body(toResponseEnrich(user,"200","User updated information"));
     }
 
-    private CreateUserCmd toCmd(PostNewUserRequest request) {
+    private CreateUserCmd toCmd(PostCreateUserRequest request) {
         return new CreateUserCmd(
                 request.getUsername(), request.getPassword(), request.getEmail()
         );
     }
 
-    private VerifyUserCmd toCmd(PostVerifyUserRequest request){
-        return new VerifyUserCmd(
+    private VerificationCmd toCmd(PostVerificationRequest request){
+        return new VerificationCmd(
                 request.getUsername(), request.getValidationCode()
         );
     }
 
-    private MoreInformationUserCmd toCmd(PostMoreInfoUserRequest request){
-        return new MoreInformationUserCmd(
-                request.getUsername(), request.getFirstName(), request.getFirstName(),request.getPhone(), request.getAddress()
+    private EnrichCmd toCmd(PostEnrichRequest request){
+        return new EnrichCmd(
+                request.getUsername(), request.getFirstName(),
+                request.getFirstName(),request.getPhone(), request.getAddress()
         );
+    }
+
+    private BaseResponse toResponseCreate(Integer userId,String code, String message) {
+        return BaseResponse.builder()
+                .success(new MessageResponse(code, message))
+                .data(new PostCreateUserResponse(userId))
+                .build();
     }
 
     private BaseResponse toResponse(User user, String code, String message) {
         return BaseResponse.builder()
                 .success(new MessageResponse(code, message))
-                .data(toResponse(user))
+                .data(toResponseGetUser(user))
                 .build();
     }
-    private BaseResponse toResponse(Integer userId) {
-        return BaseResponse.builder()
-                .success(new MessageResponse("C00", "Success user creation"))
-                .data(new PostNewUserResponse(userId))
-                .build();
-    }
-    private BaseResponse toResponseVerify(User user,String code, String message){
-        return BaseResponse.builder()
-                .success(new MessageResponse(code, message))
-                .data(toResponser(user))
-                .build();
-    }
-    private BaseResponse toResponseInfo(User user,String code, String message){
-        return BaseResponse.builder()
-                .success(new MessageResponse(code, message))
-                .data(toResponseMore(user))
-                .build();
-    }
-
-
-    private PostVerifyUserResponse toResponser(User user){
-        return PostVerifyUserResponse
-                .builder()
-                .username(user.getUsername())
-                .enabledAt(user.getEnabledAt())
-                .build();
-    }
-
-    private GetUserResponse toResponse(User user) {
+    private GetUserResponse toResponseGetUser(User user) {
         return GetUserResponse.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())
@@ -117,10 +97,28 @@ public class UsersControllers {
                 .build();
     }
 
+    private BaseResponse toResponseVerify(User user,String code, String message){
+        return BaseResponse.builder()
+                .success(new MessageResponse(code, message))
+                .data(toResponseVerification(user))
+                .build();
+    }
+    private PostVerificationResponse toResponseVerification(User user){
+        return PostVerificationResponse
+                .builder()
+                .username(user.getUsername())
+                .enabledAt(user.getEnabledAt())
+                .build();
+    }
 
-
-    private PostMoreInfoUserResponse toResponseMore(User user){
-        return PostMoreInfoUserResponse
+    private BaseResponse toResponseEnrich(User user,String code, String message){
+        return BaseResponse.builder()
+                .success(new MessageResponse(code, message))
+                .data(toResponseEnrich(user))
+                .build();
+    }
+    private PostEnrichResponse toResponseEnrich(User user){
+        return PostEnrichResponse
                 .builder()
                 .username(user.getUsername())
                 .uptatedAt(user.getUpdatedAt())

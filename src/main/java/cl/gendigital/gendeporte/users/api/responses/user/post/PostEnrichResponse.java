@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @RequiredArgsConstructor
-public class PostMoreInfoUserResponse {
+public class PostEnrichResponse {
     private final String username;
     private final LocalDateTime uptatedAt;
 }

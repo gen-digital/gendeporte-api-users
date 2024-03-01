@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostNewUserRequest {
+public class PostCreateUserRequest {
 
     @NotEmpty
     @Size(min=4,max = 100)

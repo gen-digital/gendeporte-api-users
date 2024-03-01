@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @RequiredArgsConstructor
-public class PostVerifyUserResponse {
+public class PostVerificationResponse {
     private final String username;
     private final LocalDateTime enabledAt;
 }
