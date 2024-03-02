@@ -21,17 +21,17 @@ import org.springframework.http.ResponseEntity;
 @RequestMapping("/users")
 @RestController
 @RequiredArgsConstructor
-public class UsersControllers {
+public class UserControllers {
 
     private final UserServicePort userService;
-    @PostMapping("/create-users")
+    @PostMapping()
     public ResponseEntity<BaseResponse> createUser(@RequestBody @Validated PostNewUserRequest request){
         Integer userId = userService.createUser(toCmd(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(userId));
     }
 
-    @GetMapping("/search-users")
-    public ResponseEntity<BaseResponse> getUser(@RequestParam String username){
+    @GetMapping("/by-username/{username}")
+    public ResponseEntity<BaseResponse> getUser(@PathVariable String username){
         User user = userService.getUser(new GetUserCmd(username));
         return ResponseEntity.ok(toResponse(user,"201","Usuario Encontrado"));
 
