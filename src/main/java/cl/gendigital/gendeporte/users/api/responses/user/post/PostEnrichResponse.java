@@ -11,5 +11,5 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class PostEnrichResponse {
     private final String username;
-    private final LocalDateTime uptatedAt;
+    private final LocalDateTime uptated_at;
 }

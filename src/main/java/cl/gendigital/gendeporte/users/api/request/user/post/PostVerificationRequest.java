@@ -16,6 +16,6 @@ public class PostVerificationRequest {
     private String username;
     @NotEmpty
     @Size(min=8,max = 14)
-    private String validationCode;
+    private String validation_code;
 
 }

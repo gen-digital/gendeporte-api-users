@@ -12,5 +12,5 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class PostVerificationResponse {
     private final String username;
-    private final LocalDateTime enabledAt;
+    private final LocalDateTime enabled_at;
 }

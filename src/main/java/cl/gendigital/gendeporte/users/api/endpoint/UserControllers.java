@@ -61,14 +61,14 @@ public class UserControllers {
 
     private VerificationCmd toCmd(PostVerificationRequest request){
         return new VerificationCmd(
-                request.getUsername(), request.getValidationCode()
+                request.getUsername(), request.getValidation_code()
         );
     }
 
     private EnrichCmd toCmd(PostEnrichRequest request){
         return new EnrichCmd(
-                request.getUsername(), request.getFirstName(),
-                request.getFirstName(),request.getPhone(), request.getAddress()
+                request.getUsername(), request.getFirst_name(),
+                request.getLast_name(),request.getPhone(), request.getAddress()
         );
     }
 
@@ -89,10 +89,10 @@ public class UserControllers {
         return GetUserResponse.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .validationCode(user.getValidationCode())
-                .createdAt(user.getCreatedAt())
-                .enabledAt(user.getEnabledAt())
-                .updatedAt(user.getUpdatedAt())
+                .validation_code(user.getValidationCode())
+                .created_at(user.getCreatedAt())
+                .enabled_at(user.getEnabledAt())
+                .updated_at(user.getUpdatedAt())
                 .address(user.getAddress())
                 .build();
     }
@@ -107,7 +107,7 @@ public class UserControllers {
         return PostVerificationResponse
                 .builder()
                 .username(user.getUsername())
-                .enabledAt(user.getEnabledAt())
+                .enabled_at(user.getEnabledAt())
                 .build();
     }
 
@@ -121,7 +121,7 @@ public class UserControllers {
         return PostEnrichResponse
                 .builder()
                 .username(user.getUsername())
-                .uptatedAt(user.getUpdatedAt())
+                .uptated_at(user.getUpdatedAt())
                 .build();
 
     }

@@ -6,6 +6,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class PostCreateUserResponse {
-    private final Integer userId;
+    private final Integer user_id;
 }
 

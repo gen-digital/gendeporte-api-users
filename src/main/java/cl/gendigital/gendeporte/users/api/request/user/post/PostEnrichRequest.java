@@ -15,10 +15,10 @@ public class PostEnrichRequest {
     private String username;
     @NotEmpty
     @Size(min=1,max = 100)
-    private String firstName;
+    private String first_name;
     @NotEmpty
     @Size(min=1,max = 100)
-    private String lastName;
+    private String last_name;
     @NotEmpty
     @Size(min=1,max = 50)
     private String phone;
