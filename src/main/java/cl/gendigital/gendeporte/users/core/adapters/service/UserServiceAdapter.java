@@ -16,10 +16,8 @@ public class UserServiceAdapter implements UserServicePort {
     private final UserPersistencePort userPersistencePort;
 
     private UserPersistence toPersistence(CreateUserCmd cmd) {
-        var userPersistence =
-                new UserPersistence(
-                        cmd.getUsername(), cmd.getEmail(), cmd.getPassword());
-        return userPersistence;
+        return new UserPersistence(
+                cmd.getUsername(), cmd.getEmail(), cmd.getPassword());
     }
 
     @Override

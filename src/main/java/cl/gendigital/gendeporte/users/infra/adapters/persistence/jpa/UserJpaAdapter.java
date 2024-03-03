@@ -18,6 +18,10 @@ public class UserJpaAdapter implements UserPersistencePort {
     public Optional<UserPersistence> findByUsername(String username) {
         return userRepository.findByUsername(username).map(PersistenceMapper::entityToPersistence);
     }
+    @Override
+    public Optional<UserPersistence> findByEmail(String email) {
+        return userRepository.findByEmail(email).map(PersistenceMapper::entityToPersistence);
+    }
 
     @Override
     @Transactional
@@ -27,9 +31,6 @@ public class UserJpaAdapter implements UserPersistencePort {
         return savedUserEntity.getId();
     }
 
-    @Override
-    public Optional<UserPersistence> findByEmail(String email) {
-        return userRepository.findByEmail(email).map(PersistenceMapper::entityToPersistence);
-    }
+
 
 }
