@@ -6,6 +6,7 @@ import cl.gendigital.gendeporte.users.core.commands.user.EnrichCmd;
 import cl.gendigital.gendeporte.users.core.commands.user.VerificationCmd;
 import cl.gendigital.gendeporte.users.core.entities.domain.user.User;
 import cl.gendigital.gendeporte.users.core.entities.persistence.UserPersistence;
+import cl.gendigital.gendeporte.users.core.exceptions.user.persistence.EmailExist;
 import cl.gendigital.gendeporte.users.core.exceptions.user.service.MismachedValidationCode;
 import cl.gendigital.gendeporte.users.core.exceptions.user.service.NoValidatedUser;
 import cl.gendigital.gendeporte.users.core.exceptions.user.persistence.UserExist;
@@ -37,10 +38,10 @@ public class UserServiceAdapter implements UserServicePort {
     @Override
     public Integer createUser(CreateUserCmd cmd) {
         if (userPersistencePort.existByUsername(cmd.getUsername())) {
-            throw new UserExist("user", "username", cmd.getUsername());
+            throw new UserExist(cmd.getUsername());
         }
         if (userPersistencePort.existByEmail(cmd.getEmail())){
-            throw new UserExist("user","email",cmd.getEmail());
+            throw new EmailExist(cmd.getEmail());
         }
         return userPersistencePort.save(toPersistence(cmd));
     }
@@ -50,7 +51,7 @@ public class UserServiceAdapter implements UserServicePort {
         return userPersistencePort
                 .findByUsername(cmd.getUsername())
                 .map(User::new)
-                .orElseThrow(()->new UserNotExist("user","username",cmd.getUsername()));
+                .orElseThrow(()->new UserNotExist(cmd.getUsername()));
     }
 
     @Override
@@ -58,7 +59,7 @@ public class UserServiceAdapter implements UserServicePort {
         var foundUser =
                 userPersistencePort
                         .findByUsername(cmd.getUsername())
-                        .orElseThrow(()->new UserNotExist("user","username",cmd.getUsername()));
+                        .orElseThrow(()->new UserNotExist(cmd.getUsername()));
         if (cmd.getValidationCode().equals(foundUser.getValidationCode())) {
             var verifiedUser = userPersistencePort.verify(toPersistance(cmd), foundUser);
             verifiedUser.setEnabledAt(LocalDateTime.now());
@@ -73,7 +74,7 @@ public class UserServiceAdapter implements UserServicePort {
         var foundUser =
                 userPersistencePort
                         .findByUsername(cmd.getUsername())
-                        .orElseThrow(()->new UserNotExist("user","username",cmd.getUsername()));
+                        .orElseThrow(()->new UserNotExist(cmd.getUsername()));
         if (foundUser.getEnabledAt()!= null) {
             var userInfo = userPersistencePort.enrich(toPersistance(cmd));
             return new User(userInfo);

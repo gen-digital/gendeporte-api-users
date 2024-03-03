@@ -31,7 +31,7 @@ public class UserControllers {
     @PostMapping()
     public ResponseEntity<BaseResponse> createUser(@RequestBody @Validated PostCreateUserRequest request){
         final Integer userId = userService.createUser(toCmd(request));
-        return ResponseEntity.status(HttpStatus.CREATED).body(toResponseCreate(userId,"200","User created"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(toResponseCreate(userId,"201","User created"));
     }
 
     @GetMapping("/by-username/{username}")
@@ -44,7 +44,7 @@ public class UserControllers {
     @PatchMapping("/verification")
     public ResponseEntity<BaseResponse> verifyUser(@RequestBody PostVerificationRequest request){
         final User user = userService.verifyUser(toCmd(request));
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(toResponseVerify(user,"200","User verified"));
+        return ResponseEntity.status(HttpStatus.OK).body(toResponseVerify(user,"200","User verified"));
     }
 
     @PatchMapping("/enrich")

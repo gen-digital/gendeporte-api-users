@@ -60,7 +60,7 @@ public class UserJpaAdapter implements UserPersistencePort {
     public UserPersistence enrich(UserPersistence user){
         var userInfo = userRepository
                         .findByUsername(user.getUsername())
-                        .orElseThrow(()->new UserNotExist("user","username", user.getUsername()));
+                        .orElseThrow(()->new UserNotExist(user.getUsername()));
         userInfo.setPhone(user.getPhone());
         userInfo.setAddress(user.getAddress());
         userInfo.setLastName(user.getLastName());
@@ -81,7 +81,7 @@ public class UserJpaAdapter implements UserPersistencePort {
     private User verify(UserPersistence userEnabled){
         var found = userRepository
                     .findByUsername(userEnabled.getUsername())
-                    .orElseThrow(() -> new UserNotExist("user","username",userEnabled.getUsername()));
+                    .orElseThrow(() -> new UserNotExist(userEnabled.getUsername()));
         found.setEnabledAt(LocalDateTime.now());
         return found;
     }
