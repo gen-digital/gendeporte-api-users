@@ -22,16 +22,16 @@ import org.springframework.http.ResponseEntity;
 public class UserController {
 
     private final UserServicePort userService;
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<BaseResponse> createUser(@RequestBody @Validated PostCreateUserRequest request){
-        Integer userId = userService.createUser(toCmd(request));
-        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(userId));
+        final Integer userId = userService.createUser(toCmd(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(toResponseCreate(userId,"200","User created"));
     }
 
     @GetMapping("/by-username/{username}")
     public ResponseEntity<BaseResponse> getUser(@PathVariable String username){
-        User user = userService.getUser(new GetUserCmd(username));
-        return ResponseEntity.ok(toResponse(user,"201","Usuario Encontrado"));
+        final User user = userService.getUser(new GetUserCmd(username));
+        return ResponseEntity.status(HttpStatus.OK).body(toResponse(user,"200","User founded"));
 
     }
 
@@ -55,9 +55,9 @@ public class UserController {
                 .build();
     }
 
-    private BaseResponse toResponse(Integer userId) {
+    private BaseResponse toResponseCreate(Integer userId,String code, String message) {
         return BaseResponse.builder()
-                .success(new MessageResponse("C00", "Success user creation"))
+                .success(new MessageResponse(code, message))
                 .data(new PostCreateUserResponse(userId))
                 .build();
     }

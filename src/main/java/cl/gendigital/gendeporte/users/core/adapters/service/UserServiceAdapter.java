@@ -4,11 +4,11 @@ import cl.gendigital.gendeporte.users.core.commands.CreateUserCmd;
 import cl.gendigital.gendeporte.users.core.commands.GetUserCmd;
 import cl.gendigital.gendeporte.users.core.entities.domain.user.User;
 import cl.gendigital.gendeporte.users.core.entities.persistence.UserPersistence;
+import cl.gendigital.gendeporte.users.core.exceptions.persistence.UserExist;
+import cl.gendigital.gendeporte.users.core.exceptions.persistence.UserNotExist;
 import cl.gendigital.gendeporte.users.core.port.persistence.UserPersistencePort;
 import cl.gendigital.gendeporte.users.core.port.services.UserServicePort;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public class UserServiceAdapter implements UserServicePort {
@@ -22,11 +22,13 @@ public class UserServiceAdapter implements UserServicePort {
 
     @Override
     public Integer createUser(CreateUserCmd cmd) {
-        if(userPersistencePort.findByUsername(cmd.getUsername()).isPresent()){
-            return null;
-        } else {
-            return userPersistencePort.save(toPersistence(cmd));
+        if (userPersistencePort.existByUsername(cmd.getUsername())) {
+            throw new UserExist("user", "username", cmd.getUsername());
         }
+        if (userPersistencePort.existByEmail(cmd.getEmail())){
+            throw new UserExist("user","email",cmd.getEmail());
+        }
+        return userPersistencePort.save(toPersistence(cmd));
     }
 
     @Override
@@ -34,7 +36,7 @@ public class UserServiceAdapter implements UserServicePort {
         return userPersistencePort
                 .findByUsername(cmd.getUsername())
                 .map(User::new)
-                .orElse(null);
+                .orElseThrow(()->new UserNotExist("user","username",cmd.getUsername()));
     }
 
 }
