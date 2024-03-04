@@ -5,13 +5,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class CreateUserCmd {
+public class GetUserCmd {
     private final String username;
-    private final String password;
-    private final String email;
 }

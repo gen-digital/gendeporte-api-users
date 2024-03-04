@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:gendeporte-api-users;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl:
+          import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+          auto: create-drop
+          import_files: sql_imports/06_user.sql
+          dialect: org.hibernate.dialect.H2Dialect
+        show_sql: true
+  sql:
+    init:
+      mode: always
+debug: false
+
+# Logging
+logging:
+  level:
+    org.springframework.web: INFO
+    cl.gendeporte.api: DEBUG
