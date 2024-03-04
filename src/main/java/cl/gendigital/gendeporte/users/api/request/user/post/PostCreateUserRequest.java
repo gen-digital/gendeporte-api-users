@@ -4,6 +4,8 @@ import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 
 @Getter
@@ -11,13 +13,16 @@ import javax.validation.constraints.Email;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostNewUserRequest {
+public class PostCreateUserRequest {
 
-    @NotNull
+    @NotEmpty
+    @Size(min=4,max = 100)
     private String username;
-    @NotNull
+    @NotEmpty
+    @Size(min=4,max = 100)
     private String password;
-    @Email
+    @NotEmpty
+    @Size(min=4,max = 100)
     private String email;
-    
+
 }

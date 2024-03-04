@@ -1,18 +1,16 @@
 package cl.gendigital.gendeporte.users.api.endpoint;
 
-import cl.gendigital.gendeporte.users.api.request.user.post.PostNewUserRequest;
+import cl.gendigital.gendeporte.users.api.request.user.post.PostCreateUserRequest;
 import cl.gendigital.gendeporte.users.api.responses.base.BaseResponse;
 import cl.gendigital.gendeporte.users.api.responses.base.MessageResponse;
 import cl.gendigital.gendeporte.users.api.responses.user.get.GetUserResponse;
-import cl.gendigital.gendeporte.users.api.responses.user.post.PostNewUserResponse;
+import cl.gendigital.gendeporte.users.api.responses.user.post.PostCreateUserResponse;
 import cl.gendigital.gendeporte.users.core.commands.CreateUserCmd;
 import cl.gendigital.gendeporte.users.core.commands.GetUserCmd;
 import cl.gendigital.gendeporte.users.core.entities.domain.user.User;
 import cl.gendigital.gendeporte.users.core.port.services.UserServicePort;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
@@ -21,11 +19,11 @@ import org.springframework.http.ResponseEntity;
 @RequestMapping("/users")
 @RestController
 @RequiredArgsConstructor
-public class UserControllers {
+public class UserController {
 
     private final UserServicePort userService;
-    @PostMapping()
-    public ResponseEntity<BaseResponse> createUser(@RequestBody @Validated PostNewUserRequest request){
+    @PostMapping
+    public ResponseEntity<BaseResponse> createUser(@RequestBody @Validated PostCreateUserRequest request){
         Integer userId = userService.createUser(toCmd(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(userId));
     }
@@ -37,7 +35,7 @@ public class UserControllers {
 
     }
 
-    private CreateUserCmd toCmd(PostNewUserRequest request) {
+    private CreateUserCmd toCmd(PostCreateUserRequest request) {
         return new CreateUserCmd(
                 request.getUsername(), request.getPassword(), request.getEmail());
     }
@@ -60,7 +58,7 @@ public class UserControllers {
     private BaseResponse toResponse(Integer userId) {
         return BaseResponse.builder()
                 .success(new MessageResponse("C00", "Success user creation"))
-                .data(new PostNewUserResponse(userId))
+                .data(new PostCreateUserResponse(userId))
                 .build();
     }
 
