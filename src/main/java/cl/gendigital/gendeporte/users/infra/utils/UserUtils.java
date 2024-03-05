@@ -1,9 +1,6 @@
 package cl.gendigital.gendeporte.users.infra.utils;
 
 import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-
 import java.util.concurrent.ThreadLocalRandom;
 
 

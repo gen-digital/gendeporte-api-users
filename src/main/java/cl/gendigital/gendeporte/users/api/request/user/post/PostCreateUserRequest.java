@@ -1,11 +1,8 @@
 package cl.gendigital.gendeporte.users.api.request.user.post;
 
 import lombok.*;
-
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-
 
 @Getter
 @Setter

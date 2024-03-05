@@ -7,10 +7,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 @Getter
 @RequiredArgsConstructor
 public class User extends DomainBase {

@@ -1,11 +1,8 @@
 package cl.gendigital.gendeporte.users.core.entities.persistence;
 
 
-import cl.gendigital.gendeporte.users.infra.persistence.model.jpa.User;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.persistence.Column;
 
 @Getter
 @Setter
