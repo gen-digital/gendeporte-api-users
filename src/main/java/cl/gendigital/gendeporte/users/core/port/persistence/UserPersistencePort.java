@@ -10,6 +10,9 @@ public interface UserPersistencePort {
     Integer save(UserPersistence userPersistence);
 
     Optional<UserPersistence> findByEmail(String email);
+    boolean existByUsername(String user);
+
+    boolean existByEmail(String email);
 
     UserPersistence enrich(UserPersistence user);
 

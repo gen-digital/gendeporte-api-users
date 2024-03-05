@@ -3,6 +3,7 @@ package cl.gendigital.gendeporte.users.api.request.user.get;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+
 import javax.validation.constraints.Size;
 
 @Getter
@@ -15,3 +16,4 @@ public class GetUserRequest {
     @Size(min=4,max = 100)
     private String username;
 }
+

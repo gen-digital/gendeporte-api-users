@@ -4,12 +4,14 @@ import lombok.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostCreateUserRequest {
+
 
     @NotBlank
     @Size(min=4,max = 100)

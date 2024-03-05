@@ -1,5 +1,6 @@
 package cl.gendigital.gendeporte.users.api.endpoint;
 
+
 import cl.gendigital.gendeporte.users.api.request.user.patch.PatchEnrichRequest;
 import cl.gendigital.gendeporte.users.api.request.user.post.PostCreateUserRequest;
 import cl.gendigital.gendeporte.users.api.request.user.patch.PatchVerificationRequest;
@@ -13,6 +14,7 @@ import cl.gendigital.gendeporte.users.core.commands.user.CreateUserCmd;
 import cl.gendigital.gendeporte.users.core.commands.user.GetUserCmd;
 import cl.gendigital.gendeporte.users.core.commands.user.EnrichCmd;
 import cl.gendigital.gendeporte.users.core.commands.user.VerificationCmd;
+
 import cl.gendigital.gendeporte.users.core.entities.domain.user.User;
 import cl.gendigital.gendeporte.users.core.port.services.UserServicePort;
 
@@ -28,10 +30,12 @@ import org.springframework.http.ResponseEntity;
 public class UserController {
 
     private final UserServicePort userService;
+
     @PostMapping
     public ResponseEntity<BaseResponse> createUser(@RequestBody @Validated PostCreateUserRequest request){
         final Integer userId = userService.createUser(toCmd(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(toResponseCreate(userId,"201","User created"));
+
     }
 
     @GetMapping("/by-username/{username}")
@@ -40,6 +44,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(toResponse(user,"200","User founded"));
 
     }
+
 
     @PatchMapping("/verification")
     public ResponseEntity<BaseResponse> verifyUser(@RequestBody PatchVerificationRequest request){
@@ -77,6 +82,7 @@ public class UserController {
                 .success(new MessageResponse(code, message))
                 .data(new PostCreateUserResponse(userId))
                 .build();
+
     }
 
     private BaseResponse toResponse(User user, String code, String message) {
@@ -123,6 +129,7 @@ public class UserController {
                 .username(user.getUsername())
                 .uptatedAt(user.getUpdatedAt())
                 .build();
+
 
     }
 

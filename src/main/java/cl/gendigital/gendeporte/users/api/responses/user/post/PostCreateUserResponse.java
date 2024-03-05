@@ -1,5 +1,6 @@
 package cl.gendigital.gendeporte.users.api.responses.user.post;
 
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

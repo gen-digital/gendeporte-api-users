@@ -60,6 +60,14 @@ public class UserJpaAdapter implements UserPersistencePort {
         userRepository.save(userInfo);
         return PersistenceMapper.entityToPersistence(userInfo);
     }
+    @Override
+    public boolean existByUsername(String username){
+        return userRepository.existsByUsername(username);
+    }
+    @Override
+    public boolean existByEmail(String email){
+        return userRepository.existsByEmail(email);
+    }
 
     @Override
     @Transactional

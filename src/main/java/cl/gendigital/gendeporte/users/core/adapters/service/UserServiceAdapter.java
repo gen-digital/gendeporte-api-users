@@ -11,6 +11,7 @@ import cl.gendigital.gendeporte.users.core.exceptions.user.service.MismachedVali
 import cl.gendigital.gendeporte.users.core.exceptions.user.service.NoValidatedUser;
 import cl.gendigital.gendeporte.users.core.exceptions.user.persistence.UserExist;
 import cl.gendigital.gendeporte.users.core.exceptions.user.persistence.UserNotExist;
+
 import cl.gendigital.gendeporte.users.core.port.persistence.UserPersistencePort;
 import cl.gendigital.gendeporte.users.core.port.services.UserServicePort;
 import lombok.RequiredArgsConstructor;
