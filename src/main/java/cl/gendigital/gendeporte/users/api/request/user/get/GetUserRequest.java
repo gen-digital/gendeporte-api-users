@@ -1,9 +1,9 @@
 package cl.gendigital.gendeporte.users.api.request.user.get;
 
-import com.sun.istack.NotNull;
 import lombok.*;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
+
 import javax.validation.constraints.Size;
 
 @Getter
@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetUserRequest {
-    @NotEmpty
+    @NotBlank
     @Size(min=4,max = 100)
     private String username;
 }

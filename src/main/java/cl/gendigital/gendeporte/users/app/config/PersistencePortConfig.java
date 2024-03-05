@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class PersistencePortConfig {
 
     @Bean
-    public UserPersistencePort userPersistence( UserRepository userRepository) {
-        return new UserJpaAdapter( userRepository);
+    public UserPersistencePort userPersistence(UserRepository userRepository) {
+        return new UserJpaAdapter(userRepository);
     }
 }

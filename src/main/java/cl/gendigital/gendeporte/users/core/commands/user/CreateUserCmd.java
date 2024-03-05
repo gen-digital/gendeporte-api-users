@@ -1,11 +1,9 @@
-package cl.gendigital.gendeporte.users.core.commands;
+package cl.gendigital.gendeporte.users.core.commands.user;
 
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

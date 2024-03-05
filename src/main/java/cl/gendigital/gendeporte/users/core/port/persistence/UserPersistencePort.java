@@ -7,12 +7,6 @@ import java.util.Optional;
 public interface UserPersistencePort {
     Optional<UserPersistence> findByUsername(String username);
 
-    /**
-     * Save a user
-     *
-     * @param userPersistence UserPersistence
-     * @return Integer
-     */
     Integer save(UserPersistence userPersistence);
 
     Optional<UserPersistence> findByEmail(String email);
@@ -20,5 +14,12 @@ public interface UserPersistencePort {
 
     boolean existByEmail(String email);
 
+    UserPersistence enrich(UserPersistence user);
+
+    UserPersistence verify(UserPersistence user, UserPersistence found);
+
+    boolean existByUsername(String user);
+
+    boolean existByEmail(String email);
 }
 

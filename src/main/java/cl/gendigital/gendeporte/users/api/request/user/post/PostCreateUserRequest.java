@@ -1,10 +1,7 @@
 package cl.gendigital.gendeporte.users.api.request.user.post;
 
-import com.sun.istack.NotNull;
 import lombok.*;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 
@@ -15,14 +12,15 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class PostCreateUserRequest {
 
-    @NotEmpty
+
+    @NotBlank
     @Size(min=4,max = 100)
     private String username;
-    @NotEmpty
+    @NotBlank
     @Size(min=4,max = 100)
     private String password;
-    @NotEmpty
+    @NotBlank
     @Size(min=4,max = 100)
     private String email;
-
+    
 }
