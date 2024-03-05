@@ -9,12 +9,12 @@ public class UserUtils {
 
     public static String validationCode(){
         String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        String cadena = "";
+        StringBuilder cadena = new StringBuilder();
         for (int x = 0; x < 10; x++) {
             int indiceAleatorio = ThreadLocalRandom.current().nextInt(5,banco.length());
             char caracterAleatorio = banco.charAt(indiceAleatorio);
-            cadena += caracterAleatorio;
+            cadena.append(caracterAleatorio);
         }
-        return cadena;
+        return cadena.toString();
     }
 }
