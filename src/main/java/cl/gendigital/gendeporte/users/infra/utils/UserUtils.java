@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-@Component
+
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class UserUtils {
 
-    public String validationCode(){
+    public static String validationCode(){
         String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         String cadena = "";
         for (int x = 0; x < 10; x++) {

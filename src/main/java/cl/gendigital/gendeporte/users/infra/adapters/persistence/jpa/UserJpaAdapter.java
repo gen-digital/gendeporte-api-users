@@ -17,7 +17,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserJpaAdapter implements UserPersistencePort {
     private final UserRepository userRepository;
-    private final UserUtils userUtils;
 
     @Override
     public Optional<UserPersistence> findByUsername(String username) {
@@ -30,26 +29,18 @@ public class UserJpaAdapter implements UserPersistencePort {
 
     @Override
     public boolean existByUsername(String username){
-        if(userRepository.existsByUsername(username)){
-            return true;
-        }else{
-            return false;
-        }
+        return userRepository.existsByUsername(username);
     }
     @Override
     public boolean existByEmail(String email){
-        if(userRepository.existsByEmail(email)){
-            return true;
-        }else{
-            return false;
-        }
+        return userRepository.existsByEmail(email);
     }
 
 
     @Override
     @Transactional
     public Integer save(UserPersistence userPersistence) {
-        userPersistence.setValidationCode(userUtils.validationCode());
+        userPersistence.setValidationCode(UserUtils.validationCode());
         var savedUserEntity =
                 userRepository.save(PersistenceMapper.persistenceToEntity(userPersistence));
         return savedUserEntity.getId();

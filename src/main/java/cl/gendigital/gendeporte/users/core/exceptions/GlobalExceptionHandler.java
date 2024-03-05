@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler({UserNotExist.class})
-    public ResponseEntity<Object> handleUserNotExist(UserNotExist userNotExist){
+    public ResponseEntity<ErrorResponse> handleUserNotExist(UserNotExist userNotExist){
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), userNotExist.getMessage());
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserExist.class)
-    public ResponseEntity<Object> handleUserNotExist(UserExist userExist){
+    public ResponseEntity<ErrorResponse> handleUserNotExist(UserExist userExist){
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.CONFLICT.value(),userExist.getMessage());
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MismachedValidationCode.class)
-    public ResponseEntity<Object> handleMismachedValidationCode(MismachedValidationCode mismachedValidationCode){
+    public ResponseEntity<ErrorResponse> handleMismachedValidationCode(MismachedValidationCode mismachedValidationCode){
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), mismachedValidationCode.getMessage());
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NoValidatedUser.class)
-    public ResponseEntity<Object> handleNoValidatedUser(NoValidatedUser noValidatedUser){
+    public ResponseEntity<ErrorResponse> handleNoValidatedUser(NoValidatedUser noValidatedUser){
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), noValidatedUser.getMessage());
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)

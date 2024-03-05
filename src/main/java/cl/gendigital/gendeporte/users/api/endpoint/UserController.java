@@ -1,14 +1,14 @@
 package cl.gendigital.gendeporte.users.api.endpoint;
 
-import cl.gendigital.gendeporte.users.api.request.user.post.PostEnrichRequest;
+import cl.gendigital.gendeporte.users.api.request.user.patch.PatchEnrichRequest;
 import cl.gendigital.gendeporte.users.api.request.user.post.PostCreateUserRequest;
-import cl.gendigital.gendeporte.users.api.request.user.post.PostVerificationRequest;
+import cl.gendigital.gendeporte.users.api.request.user.patch.PatchVerificationRequest;
 import cl.gendigital.gendeporte.users.api.responses.base.BaseResponse;
 import cl.gendigital.gendeporte.users.api.responses.base.MessageResponse;
 import cl.gendigital.gendeporte.users.api.responses.user.get.GetUserResponse;
-import cl.gendigital.gendeporte.users.api.responses.user.post.PostEnrichResponse;
+import cl.gendigital.gendeporte.users.api.responses.user.patch.PatchEnrichResponse;
 import cl.gendigital.gendeporte.users.api.responses.user.post.PostCreateUserResponse;
-import cl.gendigital.gendeporte.users.api.responses.user.post.PostVerificationResponse;
+import cl.gendigital.gendeporte.users.api.responses.user.patch.PatchVerificationResponse;
 import cl.gendigital.gendeporte.users.core.commands.user.CreateUserCmd;
 import cl.gendigital.gendeporte.users.core.commands.user.GetUserCmd;
 import cl.gendigital.gendeporte.users.core.commands.user.EnrichCmd;
@@ -25,10 +25,10 @@ import org.springframework.http.ResponseEntity;
 @RequestMapping("/users")
 @RestController
 @RequiredArgsConstructor
-public class UserControllers {
+public class UserController {
 
     private final UserServicePort userService;
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<BaseResponse> createUser(@RequestBody @Validated PostCreateUserRequest request){
         final Integer userId = userService.createUser(toCmd(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(toResponseCreate(userId,"201","User created"));
@@ -42,13 +42,13 @@ public class UserControllers {
     }
 
     @PatchMapping("/verification")
-    public ResponseEntity<BaseResponse> verifyUser(@RequestBody PostVerificationRequest request){
+    public ResponseEntity<BaseResponse> verifyUser(@RequestBody PatchVerificationRequest request){
         final User user = userService.verifyUser(toCmd(request));
         return ResponseEntity.status(HttpStatus.OK).body(toResponseVerify(user,"200","User verified"));
     }
 
     @PatchMapping("/enrich")
-    public ResponseEntity<BaseResponse> enrich(@RequestBody PostEnrichRequest request){
+    public ResponseEntity<BaseResponse> enrich(@RequestBody PatchEnrichRequest request){
         final User user = userService.enrich(toCmd(request));
         return ResponseEntity.status(HttpStatus.OK).body(toResponseEnrich(user,"200","User updated information"));
     }
@@ -59,16 +59,16 @@ public class UserControllers {
         );
     }
 
-    private VerificationCmd toCmd(PostVerificationRequest request){
+    private VerificationCmd toCmd(PatchVerificationRequest request){
         return new VerificationCmd(
-                request.getUsername(), request.getValidation_code()
+                request.getUsername(), request.getValidationCode()
         );
     }
 
-    private EnrichCmd toCmd(PostEnrichRequest request){
+    private EnrichCmd toCmd(PatchEnrichRequest request){
         return new EnrichCmd(
-                request.getUsername(), request.getFirst_name(),
-                request.getLast_name(),request.getPhone(), request.getAddress()
+                request.getUsername(), request.getFirstName(),
+                request.getLastName(),request.getPhone(), request.getAddress()
         );
     }
 
@@ -89,10 +89,10 @@ public class UserControllers {
         return GetUserResponse.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .validation_code(user.getValidationCode())
-                .created_at(user.getCreatedAt())
-                .enabled_at(user.getEnabledAt())
-                .updated_at(user.getUpdatedAt())
+                .validationCode(user.getValidationCode())
+                .createdAt(user.getCreatedAt())
+                .enabledAt(user.getEnabledAt())
+                .updatedAt(user.getUpdatedAt())
                 .address(user.getAddress())
                 .build();
     }
@@ -103,11 +103,11 @@ public class UserControllers {
                 .data(toResponseVerification(user))
                 .build();
     }
-    private PostVerificationResponse toResponseVerification(User user){
-        return PostVerificationResponse
+    private PatchVerificationResponse toResponseVerification(User user){
+        return PatchVerificationResponse
                 .builder()
                 .username(user.getUsername())
-                .enabled_at(user.getEnabledAt())
+                .enabledAt(user.getEnabledAt())
                 .build();
     }
 
@@ -117,11 +117,11 @@ public class UserControllers {
                 .data(toResponseEnrich(user))
                 .build();
     }
-    private PostEnrichResponse toResponseEnrich(User user){
-        return PostEnrichResponse
+    private PatchEnrichResponse toResponseEnrich(User user){
+        return PatchEnrichResponse
                 .builder()
                 .username(user.getUsername())
-                .uptated_at(user.getUpdatedAt())
+                .uptatedAt(user.getUpdatedAt())
                 .build();
 
     }
