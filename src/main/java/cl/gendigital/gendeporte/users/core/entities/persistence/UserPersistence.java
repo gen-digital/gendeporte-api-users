@@ -12,7 +12,6 @@ public class UserPersistence extends PersistenceBase{
     private String email;
     private String password;
     private String validationCode;
-
     public UserPersistence(String username, String email, String password) {
         this.username = username;
         this.email = email;

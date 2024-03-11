@@ -36,16 +36,16 @@ public class UserInfoPersistence extends PersistenceBase{
 
     public UserInfoPersistence merge(UserInfoPersistence another){
         return new UserInfoPersistence(
-                another.getFirstName() != null ? another.getFirstName() : this.getFirstName(),
-                another.getMiddleName() != null ? another.getMiddleName() : this.getMiddleName(),
-                another.getLastName() != null ? another.getLastName() : this.getLastName(),
-                another.getSecondLastName() != null ? another.getSecondLastName() : this.getSecondLastName(),
-                another.getBirthdate() != null ? another.getBirthdate() : this.getBirthdate(),
-                another.getRut() != null ? another.getRut() : this.getRut(),
-                another.getNationality() != null ? another.getNationality() : this.getNationality(),
-                another.getPhone() != null ? another.getPhone() : this.getPhone(),
-                another.getAddress() != null ? another.getAddress() : this.getAddress(),
-                another.getMaritalStatus() != null ? another.getMaritalStatus() : this.getMaritalStatus()
+                another.getFirstName() != null ? another.getFirstName() : getFirstName(),
+                another.getMiddleName() != null ? another.getMiddleName() : getMiddleName(),
+                another.getLastName() != null ? another.getLastName() : getLastName(),
+                another.getSecondLastName() != null ? another.getSecondLastName() : getSecondLastName(),
+                another.getBirthdate() != null ? another.getBirthdate() : getBirthdate(),
+                another.getRut() != null ? another.getRut() : getRut(),
+                another.getNationality() != null ? another.getNationality() : getNationality(),
+                another.getPhone() != null ? another.getPhone() : getPhone(),
+                another.getAddress() != null ? another.getAddress() : getAddress(),
+                another.getMaritalStatus() != null ? another.getMaritalStatus() : getMaritalStatus()
         );
     }
 }

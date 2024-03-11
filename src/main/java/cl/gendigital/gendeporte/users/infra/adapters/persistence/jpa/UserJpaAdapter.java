@@ -75,5 +75,12 @@ public class UserJpaAdapter implements UserPersistencePort{
         return found;
     }
 
+    @Override
+    public Integer id(String username){
+        var found = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotExist(username));
+        return found.getId();
+    }
+
 
 }

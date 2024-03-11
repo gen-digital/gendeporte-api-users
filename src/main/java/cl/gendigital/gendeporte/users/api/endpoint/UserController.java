@@ -9,12 +9,14 @@ import cl.gendigital.gendeporte.users.api.responses.base.MessageResponse;
 import cl.gendigital.gendeporte.users.api.responses.user.get.GetUserResponse;
 import cl.gendigital.gendeporte.users.api.responses.user.post.PostCreateUserResponse;
 import cl.gendigital.gendeporte.users.api.responses.user.patch.PatchVerificationResponse;
+import cl.gendigital.gendeporte.users.api.responses.user_info.get.GetUserInfoResponse;
 import cl.gendigital.gendeporte.users.api.responses.user_info.patch.PatchEnrichResponse;
 import cl.gendigital.gendeporte.users.core.commands.user.CreateUserCmd;
 import cl.gendigital.gendeporte.users.core.commands.user.GetUserCmd;
 import cl.gendigital.gendeporte.users.core.commands.user.VerificationCmd;
 
 import cl.gendigital.gendeporte.users.core.commands.user_info.EnrichCmd;
+import cl.gendigital.gendeporte.users.core.commands.user_info.GetUserInfoCmd;
 import cl.gendigital.gendeporte.users.core.entities.domain.user.User;
 import cl.gendigital.gendeporte.users.core.entities.domain.user.UserInfo;
 import cl.gendigital.gendeporte.users.core.port.services.UserInfoServicePort;
@@ -61,6 +63,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(toResponseEnrich(userInfo,"200","User info accepted"));
     }
 
+    @GetMapping("/by-username/{username}/personal-info")
+    public ResponseEntity<BaseResponse> personalInfo (@PathVariable String username){
+        final UserInfo userInfo = userInfoService.getUserInfo(new GetUserInfoCmd(username));
+        return ResponseEntity.status(HttpStatus.OK).body(toResponseGetUserInfo(userInfo,"200","User founded"));
+    }
     private CreateUserCmd toCmd(PostCreateUserRequest request) {
         return new CreateUserCmd(
                 request.getUsername(), request.getPassword(), request.getEmail()
@@ -78,7 +85,6 @@ public class UserController {
                 request.getRut(),request.getNationality(),request.getPhone(),request.getAddress(),request.getMaritalStatus()
         );
     }
-
 
     private BaseResponse toResponseCreate(Integer userId,String code, String message) {
         return BaseResponse.builder()
@@ -134,6 +140,26 @@ public class UserController {
                 .build();
     }
 
+    private BaseResponse toResponseGetUserInfo(UserInfo userInfo, String code, String message) {
+        return BaseResponse.builder()
+                .success(new MessageResponse(code, message))
+                .data(toResponseGetUserInfo(userInfo))
+                .build();
+    }
+    private GetUserInfoResponse toResponseGetUserInfo(UserInfo userInfo) {
+        return GetUserInfoResponse.builder()
+                .firstName(userInfo.getFirstName())
+                .middleName(userInfo.getMiddleName())
+                .lastName(userInfo.getLastName())
+                .secondLastName(userInfo.getSecondLastName())
+                .address(userInfo.getAddress())
+                .birthdate(userInfo.getBirthdate())
+                .maritalStatus(userInfo.getMaritalStatus())
+                .phone(userInfo.getPhone())
+                .nationality(userInfo.getNationality())
+                .rut(userInfo.getRut())
+                .build();
+    }
 
 
 }

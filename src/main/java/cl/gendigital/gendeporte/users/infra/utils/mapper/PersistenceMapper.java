@@ -13,9 +13,7 @@ public class PersistenceMapper {
         userEntity.setUsername(userPersistence.getUsername());
         userEntity.setEmail(userPersistence.getEmail());
         userEntity.setPassword(userPersistence.getPassword());
-
         userEntity.setValidationCode(userPersistence.getValidationCode());
-
         userEntity.setCreatedAt(userPersistence.getCreatedAt());
         userEntity.setEnabledAt(userPersistence.getEnabledAt());
         return userEntity;
@@ -30,7 +28,6 @@ public class PersistenceMapper {
         userPersistence.setEnabledAt(user.getEnabledAt());
         userPersistence.setDisabledAt(user.getDisabledAt());
         userPersistence.setLockedAt(user.getLockedAt());
-
         userPersistence.setValidationCode(user.getValidationCode());
         return userPersistence;
     }
