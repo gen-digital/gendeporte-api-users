@@ -5,7 +5,8 @@ import cl.gendigital.gendeporte.users.core.exceptions.user.persistence.EmailExis
 import cl.gendigital.gendeporte.users.core.exceptions.user.persistence.UserExist;
 import cl.gendigital.gendeporte.users.core.exceptions.user.persistence.UserNotExist;
 import cl.gendigital.gendeporte.users.core.exceptions.user.service.MismachedValidationCode;
-import cl.gendigital.gendeporte.users.core.exceptions.user.service.NoValidatedUser;
+import cl.gendigital.gendeporte.users.core.exceptions.user_info.persistence.UserInfoNotExist;
+import cl.gendigital.gendeporte.users.core.exceptions.user_info.service.NoValidatedUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -45,6 +46,13 @@ public class GlobalExceptionHandler {
                 .body(errorResponse);
     }
 
+    @ExceptionHandler({UserInfoNotExist.class})
+    public ResponseEntity<ErrorResponse> handleUserInfoNotExist(UserNotExist userInfoNotExist){
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), userInfoNotExist.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(errorResponse);
+    }
     @ExceptionHandler(NoValidatedUser.class)
     public ResponseEntity<ErrorResponse> handleNoValidatedUser(NoValidatedUser noValidatedUser){
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), noValidatedUser.getMessage());

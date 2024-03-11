@@ -2,13 +2,11 @@ package cl.gendigital.gendeporte.users.core.adapters.service;
 
 import cl.gendigital.gendeporte.users.core.commands.user.CreateUserCmd;
 import cl.gendigital.gendeporte.users.core.commands.user.GetUserCmd;
-import cl.gendigital.gendeporte.users.core.commands.user.EnrichCmd;
 import cl.gendigital.gendeporte.users.core.commands.user.VerificationCmd;
 import cl.gendigital.gendeporte.users.core.entities.domain.user.User;
 import cl.gendigital.gendeporte.users.core.entities.persistence.UserPersistence;
 import cl.gendigital.gendeporte.users.core.exceptions.user.persistence.EmailExist;
 import cl.gendigital.gendeporte.users.core.exceptions.user.service.MismachedValidationCode;
-import cl.gendigital.gendeporte.users.core.exceptions.user.service.NoValidatedUser;
 import cl.gendigital.gendeporte.users.core.exceptions.user.persistence.UserExist;
 import cl.gendigital.gendeporte.users.core.exceptions.user.persistence.UserNotExist;
 
@@ -32,9 +30,6 @@ public class UserServiceAdapter implements UserServicePort {
         return new UserPersistence(cmd.getUsername(), cmd.getValidationCode());
     }
 
-    private UserPersistence toPersistance(EnrichCmd cmd) {
-        return new UserPersistence(cmd.getUsername(), cmd.getFirstName(), cmd.getLastName(), cmd.getPhone(), cmd.getAddress());
-    }
 
     @Override
     public Integer createUser(CreateUserCmd cmd) {
@@ -70,16 +65,4 @@ public class UserServiceAdapter implements UserServicePort {
         }
     }
 
-    @Override
-    public User enrich(EnrichCmd cmd) {
-        var foundUser =
-                userPersistencePort
-                        .findByUsername(cmd.getUsername())
-                        .orElseThrow(()->new UserNotExist(cmd.getUsername()));
-        if (foundUser.getEnabledAt()!= null) {
-            var userInfo = userPersistencePort.enrich(toPersistance(cmd));
-            return new User(userInfo);
-        }
-        throw new NoValidatedUser();
-    }
 }

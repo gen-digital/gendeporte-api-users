@@ -12,10 +12,6 @@ public class UserPersistence extends PersistenceBase{
     private String email;
     private String password;
     private String validationCode;
-    private String firstName;
-    private String lastName;
-    private String phone;
-    private String address;
 
     public UserPersistence(String username, String email, String password) {
         this.username = username;
@@ -26,13 +22,6 @@ public class UserPersistence extends PersistenceBase{
     public UserPersistence(String username,String validationCode){
         this.username = username;
         this.validationCode = validationCode;
-    }
-    public UserPersistence(String username,String firstName,String lastName,String phone,String address){
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.address = address;
     }
 
     public UserPersistence merge(UserPersistence another) {

@@ -14,12 +14,8 @@ public interface UserPersistencePort {
 
     boolean existByEmail(String email);
 
-    UserPersistence enrich(UserPersistence user);
-
     UserPersistence verify(UserPersistence user, UserPersistence found);
 
-    boolean existByUsername(String user);
 
-    boolean existByEmail(String email);
 }
 

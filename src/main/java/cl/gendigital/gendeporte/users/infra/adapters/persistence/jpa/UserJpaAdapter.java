@@ -4,10 +4,15 @@ import cl.gendigital.gendeporte.users.core.entities.persistence.UserPersistence;
 import cl.gendigital.gendeporte.users.core.exceptions.user.persistence.UserNotExist;
 import cl.gendigital.gendeporte.users.core.port.persistence.UserPersistencePort;
 import cl.gendigital.gendeporte.users.infra.persistence.model.jpa.User;
+import cl.gendigital.gendeporte.users.infra.persistence.model.jpa.UserInfo;
+import cl.gendigital.gendeporte.users.infra.persistence.repository.jpa.UserInfoRepository;
 import cl.gendigital.gendeporte.users.infra.persistence.repository.jpa.UserRepository;
 import cl.gendigital.gendeporte.users.infra.utils.UserUtils;
 import cl.gendigital.gendeporte.users.infra.utils.mapper.PersistenceMapper;
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -15,8 +20,11 @@ import java.util.Optional;
 
 
 @RequiredArgsConstructor
-public class UserJpaAdapter implements UserPersistencePort {
+public class UserJpaAdapter implements UserPersistencePort{
     private final UserRepository userRepository;
+    private final UserInfoRepository userInfoRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Optional<UserPersistence> findByUsername(String username) {
@@ -41,33 +49,15 @@ public class UserJpaAdapter implements UserPersistencePort {
     @Transactional
     public Integer save(UserPersistence userPersistence) {
         userPersistence.setValidationCode(UserUtils.validationCode());
+        userPersistence.setPassword(passwordEncoder.encode(userPersistence.getPassword()));
         var savedUserEntity =
                 userRepository.save(PersistenceMapper.persistenceToEntity(userPersistence));
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUser(savedUserEntity);
+        userInfoRepository.save(userInfo);
         return savedUserEntity.getId();
     }
 
-    @Override
-    @Transactional
-    public UserPersistence enrich(UserPersistence user){
-        var userInfo = userRepository
-                        .findByUsername(user.getUsername())
-                        .orElseThrow(()->new UserNotExist(user.getUsername()));
-        userInfo.setPhone(user.getPhone());
-        userInfo.setAddress(user.getAddress());
-        userInfo.setLastName(user.getLastName());
-        userInfo.setFirstName(user.getFirstName());
-        userInfo.setUpdatedAt(LocalDateTime.now());
-        userRepository.save(userInfo);
-        return PersistenceMapper.entityToPersistence(userInfo);
-    }
-    @Override
-    public boolean existByUsername(String username){
-        return userRepository.existsByUsername(username);
-    }
-    @Override
-    public boolean existByEmail(String email){
-        return userRepository.existsByEmail(email);
-    }
 
     @Override
     @Transactional
@@ -84,7 +74,6 @@ public class UserJpaAdapter implements UserPersistencePort {
         found.setEnabledAt(LocalDateTime.now());
         return found;
     }
-
 
 
 }

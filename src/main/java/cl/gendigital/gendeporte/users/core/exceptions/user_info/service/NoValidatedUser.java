@@ -1,4 +1,4 @@
-package cl.gendigital.gendeporte.users.core.exceptions.user.service;
+package cl.gendigital.gendeporte.users.core.exceptions.user_info.service;
 
 
 public class NoValidatedUser extends RuntimeException {
