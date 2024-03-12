@@ -3,6 +3,7 @@ package cl.gendigital.gendeporte.users.core.entities.domain.user;
 
 import cl.gendigital.gendeporte.users.core.entities.domain.DomainBase;
 import cl.gendigital.gendeporte.users.core.entities.persistence.UserPersistence;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

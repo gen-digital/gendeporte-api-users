@@ -5,14 +5,11 @@ import cl.gendigital.gendeporte.users.core.exceptions.user_info.persistence.User
 import cl.gendigital.gendeporte.users.core.port.persistence.UserInfoPersistencePort;
 import cl.gendigital.gendeporte.users.infra.persistence.repository.jpa.UserInfoRepository;
 import cl.gendigital.gendeporte.users.infra.utils.mapper.PersistenceMapper;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Optional;
 
-/**
- * The type User info jpa adapter.
- */
 @RequiredArgsConstructor
 public class UserInfoJpaAdapter implements UserInfoPersistencePort {
 

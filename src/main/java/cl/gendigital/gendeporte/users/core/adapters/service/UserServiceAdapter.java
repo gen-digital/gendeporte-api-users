@@ -9,9 +9,9 @@ import cl.gendigital.gendeporte.users.core.exceptions.user.persistence.EmailExis
 import cl.gendigital.gendeporte.users.core.exceptions.user.service.MismachedValidationCode;
 import cl.gendigital.gendeporte.users.core.exceptions.user.persistence.UserExist;
 import cl.gendigital.gendeporte.users.core.exceptions.user.persistence.UserNotExist;
-
 import cl.gendigital.gendeporte.users.core.port.persistence.UserPersistencePort;
 import cl.gendigital.gendeporte.users.core.port.services.UserServicePort;
+
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -27,7 +27,7 @@ public class UserServiceAdapter implements UserServicePort {
     }
 
     private UserPersistence toPersistance(VerificationCmd cmd) {
-        return new UserPersistence(cmd.getUsername(), cmd.getValidationCode());
+        return new UserPersistence( cmd.getValidationCode());
     }
 
 
@@ -51,11 +51,11 @@ public class UserServiceAdapter implements UserServicePort {
     }
 
     @Override
-    public User verifyUser(VerificationCmd cmd) {
+    public User verifyUser(String username,VerificationCmd cmd) {
         var foundUser =
                 userPersistencePort
-                        .findByUsername(cmd.getUsername())
-                        .orElseThrow(()->new UserNotExist(cmd.getUsername()));
+                        .findByUsername(username)
+                        .orElseThrow(()->new UserNotExist(username));
         if (cmd.getValidationCode().equals(foundUser.getValidationCode())) {
             var verifiedUser = userPersistencePort.verify(toPersistance(cmd), foundUser);
             verifiedUser.setEnabledAt(LocalDateTime.now());

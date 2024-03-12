@@ -1,6 +1,7 @@
 package cl.gendigital.gendeporte.users.infra.persistence.repository.jpa;
 
 import cl.gendigital.gendeporte.users.infra.persistence.model.jpa.User;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 

@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class EnrichCmd {
+public class UploadPersonalInfoCmd {
     private final String firstName;
     private final String middleName;
     private final String lastName;

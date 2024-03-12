@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -54,6 +53,6 @@ public class UserInfo extends EntityBase {
     private User user;
     @Override
     public String getName() {
-        return null;
+        return getFirstName().concat(" ").concat(getLastName());
     }
 }

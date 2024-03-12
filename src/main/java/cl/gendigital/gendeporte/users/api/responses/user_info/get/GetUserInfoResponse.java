@@ -4,14 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Getter
 @Builder
 public class GetUserInfoResponse {
-    @Size(min=4,max = 100)
+    @JsonProperty("first_name")
     private String firstName;
     @JsonProperty("middle_name")
     private String middleName;

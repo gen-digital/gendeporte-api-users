@@ -8,6 +8,5 @@ import lombok.Setter;
 @Setter
 @RequiredArgsConstructor
 public class VerificationCmd {
-    private final String username;
     private final String validationCode;
 }

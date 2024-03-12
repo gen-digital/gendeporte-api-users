@@ -7,6 +7,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @Builder
 @RequiredArgsConstructor
-public class PatchEnrichResponse {
+public class PatchUploadPersonalInfoResponse {
     private final String phone;
 }

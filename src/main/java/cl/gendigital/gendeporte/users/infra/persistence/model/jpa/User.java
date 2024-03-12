@@ -2,11 +2,11 @@ package cl.gendigital.gendeporte.users.infra.persistence.model.jpa;
 
 
 import cl.gendigital.gendeporte.users.infra.persistence.model.jpa.common.EntityBase;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 

@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -76,10 +75,10 @@ public class UserJpaAdapter implements UserPersistencePort{
     }
 
     @Override
-    public Integer id(String username){
-        var found = userRepository.findByUsername(username)
+    public Integer GetIdByUsername(String username){
+        var user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotExist(username));
-        return found.getId();
+        return user.getId();
     }
 
 

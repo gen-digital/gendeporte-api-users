@@ -1,13 +1,13 @@
 package cl.gendigital.gendeporte.users.infra.persistence.model.jpa.common;
 
 import cl.gendigital.gendeporte.users.commons.DateUtils;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;

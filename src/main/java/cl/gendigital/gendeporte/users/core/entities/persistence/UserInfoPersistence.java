@@ -1,6 +1,5 @@
 package cl.gendigital.gendeporte.users.core.entities.persistence;
 
-import cl.gendigital.gendeporte.users.core.entities.domain.user.UserInfo;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -16,6 +16,6 @@ public interface UserPersistencePort {
 
     UserPersistence verify(UserPersistence user, UserPersistence found);
 
-    Integer id(String user);
+    Integer GetIdByUsername(String user);
 }
 

@@ -9,6 +9,6 @@ public interface UserServicePort {
 
     Integer createUser(CreateUserCmd cmd);
     User getUser(GetUserCmd cmd);
-    User verifyUser(VerificationCmd cmd);
+    User verifyUser(String username,VerificationCmd cmd);
 
 }

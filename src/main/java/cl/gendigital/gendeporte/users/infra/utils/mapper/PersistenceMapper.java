@@ -4,6 +4,7 @@ import cl.gendigital.gendeporte.users.core.entities.persistence.UserInfoPersiste
 import cl.gendigital.gendeporte.users.core.entities.persistence.UserPersistence;
 import cl.gendigital.gendeporte.users.infra.persistence.model.jpa.User;
 import cl.gendigital.gendeporte.users.infra.persistence.model.jpa.UserInfo;
+
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)

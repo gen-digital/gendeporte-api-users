@@ -6,6 +6,7 @@ import cl.gendigital.gendeporte.users.infra.adapters.persistence.jpa.UserInfoJpa
 import cl.gendigital.gendeporte.users.infra.adapters.persistence.jpa.UserJpaAdapter;
 import cl.gendigital.gendeporte.users.infra.persistence.repository.jpa.UserInfoRepository;
 import cl.gendigital.gendeporte.users.infra.persistence.repository.jpa.UserRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -7,6 +7,7 @@ import cl.gendigital.gendeporte.users.core.exceptions.user.persistence.UserNotEx
 import cl.gendigital.gendeporte.users.core.exceptions.user.service.MismachedValidationCode;
 import cl.gendigital.gendeporte.users.core.exceptions.user_info.persistence.UserInfoNotExist;
 import cl.gendigital.gendeporte.users.core.exceptions.user_info.service.NoValidatedUser;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

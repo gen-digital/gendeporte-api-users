@@ -3,19 +3,19 @@ package cl.gendigital.gendeporte.users.api.endpoint;
 
 import cl.gendigital.gendeporte.users.api.request.user.post.PostCreateUserRequest;
 import cl.gendigital.gendeporte.users.api.request.user.patch.PatchVerificationRequest;
-import cl.gendigital.gendeporte.users.api.request.user_info.patch.PatchEnrichRequest;
+import cl.gendigital.gendeporte.users.api.request.user_info.patch.PatchEUploadPersonalInfoRequest;
 import cl.gendigital.gendeporte.users.api.responses.base.BaseResponse;
 import cl.gendigital.gendeporte.users.api.responses.base.MessageResponse;
 import cl.gendigital.gendeporte.users.api.responses.user.get.GetUserResponse;
 import cl.gendigital.gendeporte.users.api.responses.user.post.PostCreateUserResponse;
 import cl.gendigital.gendeporte.users.api.responses.user.patch.PatchVerificationResponse;
 import cl.gendigital.gendeporte.users.api.responses.user_info.get.GetUserInfoResponse;
-import cl.gendigital.gendeporte.users.api.responses.user_info.patch.PatchEnrichResponse;
+import cl.gendigital.gendeporte.users.api.responses.user_info.patch.PatchUploadPersonalInfoResponse;
 import cl.gendigital.gendeporte.users.core.commands.user.CreateUserCmd;
 import cl.gendigital.gendeporte.users.core.commands.user.GetUserCmd;
 import cl.gendigital.gendeporte.users.core.commands.user.VerificationCmd;
 
-import cl.gendigital.gendeporte.users.core.commands.user_info.EnrichCmd;
+import cl.gendigital.gendeporte.users.core.commands.user_info.UploadPersonalInfoCmd;
 import cl.gendigital.gendeporte.users.core.commands.user_info.GetUserInfoCmd;
 import cl.gendigital.gendeporte.users.core.entities.domain.user.User;
 import cl.gendigital.gendeporte.users.core.entities.domain.user.UserInfo;
@@ -23,7 +23,6 @@ import cl.gendigital.gendeporte.users.core.port.services.UserInfoServicePort;
 import cl.gendigital.gendeporte.users.core.port.services.UserServicePort;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
@@ -51,20 +50,20 @@ public class UserController {
 
     }
 
-    @PatchMapping("/verification")
-    public ResponseEntity<BaseResponse> verifyUser(@RequestBody PatchVerificationRequest request){
-        final User user = userService.verifyUser(toCmd(request));
+    @PatchMapping("/by-username/{username}/verification")
+    public ResponseEntity<BaseResponse> verifyUser(@PathVariable String username,@RequestBody PatchVerificationRequest request){
+        final User user = userService.verifyUser(username,toCmd(request));
         return ResponseEntity.status(HttpStatus.OK).body(toResponseVerify(user,"200","User verified"));
     }
 
-    @PatchMapping("/by-username/{username}/enrich")
-    public ResponseEntity<BaseResponse> enrichUser (@PathVariable String username,@RequestBody PatchEnrichRequest request){
-        final UserInfo userInfo = userInfoService.enrich(username,toCmd(request));
-        return ResponseEntity.status(HttpStatus.CREATED).body(toResponseEnrich(userInfo,"200","User info accepted"));
+    @PatchMapping("/by-username/{username}/upload-personal-info")
+    public ResponseEntity<BaseResponse> uploadpersonalInfo(@PathVariable String username,@RequestBody PatchEUploadPersonalInfoRequest request){
+        final UserInfo userInfo = userInfoService.UploadPersonalInfo(username,toCmd(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(toResponseUploadPersonalInfo(userInfo,"200","User info accepted"));
     }
 
-    @GetMapping("/by-username/{username}/personal-info")
-    public ResponseEntity<BaseResponse> personalInfo (@PathVariable String username){
+    @GetMapping("/by-username/{username}/show-personal-info")
+    public ResponseEntity<BaseResponse> getpersonalInfo(@PathVariable String username){
         final UserInfo userInfo = userInfoService.getUserInfo(new GetUserInfoCmd(username));
         return ResponseEntity.status(HttpStatus.OK).body(toResponseGetUserInfo(userInfo,"200","User founded"));
     }
@@ -76,11 +75,11 @@ public class UserController {
 
     private VerificationCmd toCmd(PatchVerificationRequest request){
         return new VerificationCmd(
-                request.getUsername(), request.getValidationCode()
+                request.getValidationCode()
         );
     }
-    private EnrichCmd toCmd(PatchEnrichRequest request){
-        return new EnrichCmd(
+    private UploadPersonalInfoCmd toCmd(PatchEUploadPersonalInfoRequest request){
+        return new UploadPersonalInfoCmd(
                 request.getFirstName(), request.getMiddleName(), request.getLastName(), request.getSecondLastName(), request.getBirthdate(),
                 request.getRut(),request.getNationality(),request.getPhone(),request.getAddress(),request.getMaritalStatus()
         );
@@ -104,7 +103,6 @@ public class UserController {
         return GetUserResponse.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .password(user.getPassword())
                 .validationCode(user.getValidationCode())
                 .createdAt(user.getCreatedAt())
                 .enabledAt(user.getEnabledAt())
@@ -126,15 +124,15 @@ public class UserController {
                 .build();
     }
 
-    private BaseResponse toResponseEnrich(UserInfo userInfo,String code,String message){
+    private BaseResponse toResponseUploadPersonalInfo(UserInfo userInfo,String code,String message){
         return BaseResponse.builder()
                 .success(new MessageResponse(code, message))
-                .data(toResponseEnrich(userInfo))
+                .data(toResponseUploadPersonalInfo(userInfo))
                 .build();
     }
 
-    private PatchEnrichResponse toResponseEnrich(UserInfo userInfo){
-        return PatchEnrichResponse
+    private PatchUploadPersonalInfoResponse toResponseUploadPersonalInfo(UserInfo userInfo){
+        return PatchUploadPersonalInfoResponse
                 .builder()
                 .phone(userInfo.getPhone())
                 .build();

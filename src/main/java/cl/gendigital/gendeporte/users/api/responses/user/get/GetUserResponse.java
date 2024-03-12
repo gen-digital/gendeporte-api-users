@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 public class GetUserResponse {
     private String username;
     private String email;
-    private String password;
     @JsonProperty(value="validation_code",access= JsonProperty.Access.READ_ONLY)
     private String validationCode;
     @JsonProperty(value="created_at",access= JsonProperty.Access.READ_ONLY)

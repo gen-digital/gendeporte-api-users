@@ -18,8 +18,7 @@ public class UserPersistence extends PersistenceBase{
         this.password = password;
     }
 
-    public UserPersistence(String username,String validationCode){
-        this.username = username;
+    public UserPersistence(String validationCode){
         this.validationCode = validationCode;
     }
 
