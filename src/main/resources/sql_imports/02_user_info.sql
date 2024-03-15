@@ -1,0 +1,2 @@
+INSERT INTO users_info(user_id,first_name,middle_name,last_name,second_last_name,birthdate,rut,nationality,phone,address,marital_status,created_at, updated_at, enabled_at, disabled_at) values
+    (Select id from users where username = 'martin','martin','luciano','fonseca','rubio','2003-01-18','2313','chilena','+455','casa 2','single',now(),now(),now(),now());

@@ -19,5 +19,5 @@ public class GetUserResponse {
     private LocalDateTime enabledAt;
     @JsonProperty(value="update_at",access= JsonProperty.Access.READ_ONLY)
     private LocalDateTime updatedAt;
-    private String address;
+
 }

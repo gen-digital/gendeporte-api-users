@@ -1,21 +1,25 @@
 package cl.gendigital.gendeporte.users.api.endpoint;
 
 
-import cl.gendigital.gendeporte.users.api.request.user.patch.PatchEnrichRequest;
 import cl.gendigital.gendeporte.users.api.request.user.post.PostCreateUserRequest;
 import cl.gendigital.gendeporte.users.api.request.user.patch.PatchVerificationRequest;
+import cl.gendigital.gendeporte.users.api.request.user_info.patch.PatchUploadPersonalInfoRequest;
 import cl.gendigital.gendeporte.users.api.responses.base.BaseResponse;
 import cl.gendigital.gendeporte.users.api.responses.base.MessageResponse;
 import cl.gendigital.gendeporte.users.api.responses.user.get.GetUserResponse;
-import cl.gendigital.gendeporte.users.api.responses.user.patch.PatchEnrichResponse;
 import cl.gendigital.gendeporte.users.api.responses.user.post.PostCreateUserResponse;
 import cl.gendigital.gendeporte.users.api.responses.user.patch.PatchVerificationResponse;
+import cl.gendigital.gendeporte.users.api.responses.user_info.get.GetUserInfoResponse;
+import cl.gendigital.gendeporte.users.api.responses.user_info.patch.PatchUploadPersonalInfoResponse;
 import cl.gendigital.gendeporte.users.core.commands.user.CreateUserCmd;
 import cl.gendigital.gendeporte.users.core.commands.user.GetUserCmd;
-import cl.gendigital.gendeporte.users.core.commands.user.EnrichCmd;
 import cl.gendigital.gendeporte.users.core.commands.user.VerificationCmd;
 
+import cl.gendigital.gendeporte.users.core.commands.user_info.UploadPersonalInfoCmd;
+import cl.gendigital.gendeporte.users.core.commands.user_info.GetUserInfoCmd;
 import cl.gendigital.gendeporte.users.core.entities.domain.user.User;
+import cl.gendigital.gendeporte.users.core.entities.domain.user.UserInfo;
+import cl.gendigital.gendeporte.users.core.port.services.UserInfoServicePort;
 import cl.gendigital.gendeporte.users.core.port.services.UserServicePort;
 
 import lombok.RequiredArgsConstructor;
@@ -30,6 +34,7 @@ import org.springframework.http.ResponseEntity;
 public class UserController {
 
     private final UserServicePort userService;
+    private final UserInfoServicePort userInfoService;
 
     @PostMapping
     public ResponseEntity<BaseResponse> createUser(@RequestBody @Validated PostCreateUserRequest request){
@@ -41,22 +46,27 @@ public class UserController {
     @GetMapping("/by-username/{username}")
     public ResponseEntity<BaseResponse> getUser(@PathVariable String username){
         final User user = userService.getUser(new GetUserCmd(username));
-        return ResponseEntity.status(HttpStatus.OK).body(toResponse(user,"200","User founded"));
+        return ResponseEntity.status(HttpStatus.OK).body(toResponseGetUser(user,"200","User founded"));
 
     }
+    @GetMapping("/by-username/{username}/show-personal-info")
+    public ResponseEntity<BaseResponse> getpersonalInfo(@PathVariable String username){
+        final UserInfo userInfo = userInfoService.getUserInfo(new GetUserInfoCmd(username));
+        return ResponseEntity.status(HttpStatus.OK).body(toResponseGetUserInfo(userInfo,"200","User founded"));
+    }
 
-
-    @PatchMapping("/verification")
-    public ResponseEntity<BaseResponse> verifyUser(@RequestBody PatchVerificationRequest request){
-        final User user = userService.verifyUser(toCmd(request));
+    @PatchMapping("/by-username/{username}/verification")
+    public ResponseEntity<BaseResponse> verifyUser(@PathVariable String username,@RequestBody PatchVerificationRequest request){
+        final User user = userService.verifyUser(username,toCmd(request));
         return ResponseEntity.status(HttpStatus.OK).body(toResponseVerify(user,"200","User verified"));
     }
 
-    @PatchMapping("/enrich")
-    public ResponseEntity<BaseResponse> enrich(@RequestBody PatchEnrichRequest request){
-        final User user = userService.enrich(toCmd(request));
-        return ResponseEntity.status(HttpStatus.OK).body(toResponseEnrich(user,"200","User updated information"));
+    @PatchMapping("/by-username/{username}/upload-personal-info")
+    public ResponseEntity<BaseResponse> uploadpersonalInfo(@PathVariable String username,@RequestBody PatchUploadPersonalInfoRequest request){
+        final UserInfo userInfo = userInfoService.uploadPersonalInfo(username,toCmd(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(toResponseUploadPersonalInfo(userInfo,"200","User info accepted"));
     }
+
 
     private CreateUserCmd toCmd(PostCreateUserRequest request) {
         return new CreateUserCmd(
@@ -66,14 +76,13 @@ public class UserController {
 
     private VerificationCmd toCmd(PatchVerificationRequest request){
         return new VerificationCmd(
-                request.getUsername(), request.getValidationCode()
+                request.getValidationCode()
         );
     }
-
-    private EnrichCmd toCmd(PatchEnrichRequest request){
-        return new EnrichCmd(
-                request.getUsername(), request.getFirstName(),
-                request.getLastName(),request.getPhone(), request.getAddress()
+    private UploadPersonalInfoCmd toCmd(PatchUploadPersonalInfoRequest request){
+        return new UploadPersonalInfoCmd(
+                request.getFirstName(), request.getMiddleName(), request.getLastName(), request.getSecondLastName(), request.getBirthdate(),
+                request.getRut(),request.getNationality(),request.getPhone(),request.getAddress(),request.getMaritalStatus()
         );
     }
 
@@ -85,7 +94,7 @@ public class UserController {
 
     }
 
-    private BaseResponse toResponse(User user, String code, String message) {
+    private BaseResponse toResponseGetUser(User user, String code, String message) {
         return BaseResponse.builder()
                 .success(new MessageResponse(code, message))
                 .data(toResponseGetUser(user))
@@ -99,7 +108,6 @@ public class UserController {
                 .createdAt(user.getCreatedAt())
                 .enabledAt(user.getEnabledAt())
                 .updatedAt(user.getUpdatedAt())
-                .address(user.getAddress())
                 .build();
     }
 
@@ -117,20 +125,40 @@ public class UserController {
                 .build();
     }
 
-    private BaseResponse toResponseEnrich(User user,String code, String message){
+    private BaseResponse toResponseUploadPersonalInfo(UserInfo userInfo,String code,String message){
         return BaseResponse.builder()
                 .success(new MessageResponse(code, message))
-                .data(toResponseEnrich(user))
+                .data(toResponseUploadPersonalInfo(userInfo))
                 .build();
     }
-    private PatchEnrichResponse toResponseEnrich(User user){
-        return PatchEnrichResponse
+
+    private PatchUploadPersonalInfoResponse toResponseUploadPersonalInfo(UserInfo userInfo){
+        return PatchUploadPersonalInfoResponse
                 .builder()
-                .username(user.getUsername())
-                .uptatedAt(user.getUpdatedAt())
+                .phone(userInfo.getPhone())
                 .build();
-
-
     }
+
+    private BaseResponse toResponseGetUserInfo(UserInfo userInfo, String code, String message) {
+        return BaseResponse.builder()
+                .success(new MessageResponse(code, message))
+                .data(toResponseGetUserInfo(userInfo))
+                .build();
+    }
+    private GetUserInfoResponse toResponseGetUserInfo(UserInfo userInfo) {
+        return GetUserInfoResponse.builder()
+                .firstName(userInfo.getFirstName())
+                .middleName(userInfo.getMiddleName())
+                .lastName(userInfo.getLastName())
+                .secondLastName(userInfo.getSecondLastName())
+                .address(userInfo.getAddress())
+                .birthdate(userInfo.getBirthdate())
+                .maritalStatus(userInfo.getMaritalStatus())
+                .phone(userInfo.getPhone())
+                .nationality(userInfo.getNationality())
+                .rut(userInfo.getRut())
+                .build();
+    }
+
 
 }

@@ -1,2 +1,2 @@
-INSERT INTO users (username, password, email, created_at, updated_at, enabled_at,first_name,last_name,phone,address) VALUES
-('merlin', '$2a$10$KkYuATCAWSeOUBkgxVMdieO9x3Z1H6Qbudl3nanasRmUMmNYEVG5a', 'martino@gmail.com', NOW(), NOW(), NOW(),'Martin','Fonseca','+56966','casa 2');
+INSERT INTO users (username, password, email, created_at, updated_at, enabled_at) VALUES
+('merlin', '$2a$10$KkYuATCAWSeOUBkgxVMdieO9x3Z1H6Qbudl3nanasRmUMmNYEVG5a', 'martino@gmail.com', NOW(), NOW(), NOW());
