@@ -3,7 +3,7 @@ package cl.gendigital.gendeporte.users.api.endpoint;
 
 import cl.gendigital.gendeporte.users.api.request.user.post.PostCreateUserRequest;
 import cl.gendigital.gendeporte.users.api.request.user.patch.PatchVerificationRequest;
-import cl.gendigital.gendeporte.users.api.request.user_info.patch.PatchEUploadPersonalInfoRequest;
+import cl.gendigital.gendeporte.users.api.request.user_info.patch.PatchUploadPersonalInfoRequest;
 import cl.gendigital.gendeporte.users.api.responses.base.BaseResponse;
 import cl.gendigital.gendeporte.users.api.responses.base.MessageResponse;
 import cl.gendigital.gendeporte.users.api.responses.user.get.GetUserResponse;
@@ -49,6 +49,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(toResponseGetUser(user,"200","User founded"));
 
     }
+    @GetMapping("/by-username/{username}/show-personal-info")
+    public ResponseEntity<BaseResponse> getpersonalInfo(@PathVariable String username){
+        final UserInfo userInfo = userInfoService.getUserInfo(new GetUserInfoCmd(username));
+        return ResponseEntity.status(HttpStatus.OK).body(toResponseGetUserInfo(userInfo,"200","User founded"));
+    }
 
     @PatchMapping("/by-username/{username}/verification")
     public ResponseEntity<BaseResponse> verifyUser(@PathVariable String username,@RequestBody PatchVerificationRequest request){
@@ -57,16 +62,12 @@ public class UserController {
     }
 
     @PatchMapping("/by-username/{username}/upload-personal-info")
-    public ResponseEntity<BaseResponse> uploadpersonalInfo(@PathVariable String username,@RequestBody PatchEUploadPersonalInfoRequest request){
-        final UserInfo userInfo = userInfoService.UploadPersonalInfo(username,toCmd(request));
+    public ResponseEntity<BaseResponse> uploadpersonalInfo(@PathVariable String username,@RequestBody PatchUploadPersonalInfoRequest request){
+        final UserInfo userInfo = userInfoService.uploadPersonalInfo(username,toCmd(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(toResponseUploadPersonalInfo(userInfo,"200","User info accepted"));
     }
 
-    @GetMapping("/by-username/{username}/show-personal-info")
-    public ResponseEntity<BaseResponse> getpersonalInfo(@PathVariable String username){
-        final UserInfo userInfo = userInfoService.getUserInfo(new GetUserInfoCmd(username));
-        return ResponseEntity.status(HttpStatus.OK).body(toResponseGetUserInfo(userInfo,"200","User founded"));
-    }
+
     private CreateUserCmd toCmd(PostCreateUserRequest request) {
         return new CreateUserCmd(
                 request.getUsername(), request.getPassword(), request.getEmail()
@@ -78,7 +79,7 @@ public class UserController {
                 request.getValidationCode()
         );
     }
-    private UploadPersonalInfoCmd toCmd(PatchEUploadPersonalInfoRequest request){
+    private UploadPersonalInfoCmd toCmd(PatchUploadPersonalInfoRequest request){
         return new UploadPersonalInfoCmd(
                 request.getFirstName(), request.getMiddleName(), request.getLastName(), request.getSecondLastName(), request.getBirthdate(),
                 request.getRut(),request.getNationality(),request.getPhone(),request.getAddress(),request.getMaritalStatus()

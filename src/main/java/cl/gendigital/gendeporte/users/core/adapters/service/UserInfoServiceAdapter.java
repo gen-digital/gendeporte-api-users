@@ -26,8 +26,8 @@ public class UserInfoServiceAdapter implements UserInfoServicePort {
         );
     }
     @Override
-    public UserInfo UploadPersonalInfo(String username, UploadPersonalInfoCmd cmd) {
-        var foundUser= userPersistencePort.GetIdByUsername(username);
+    public UserInfo uploadPersonalInfo(String username, UploadPersonalInfoCmd cmd) {
+        var foundUser= userPersistencePort.getIdByUsername(username);
         var user = userPersistencePort.findByUsername(username)
                 .orElseThrow(() -> new UserInfoNotExist(username));
         if (user.getEnabledAt() != null) {
@@ -40,7 +40,7 @@ public class UserInfoServiceAdapter implements UserInfoServicePort {
 
     @Override
     public UserInfo getUserInfo(GetUserInfoCmd cmd) {
-        var userId= userPersistencePort.GetIdByUsername(cmd.getUsername());
+        var userId= userPersistencePort.getIdByUsername(cmd.getUsername());
         return userInfoPersistencePort
                 .findByUserId(userId)
                 .map(UserInfo::new)

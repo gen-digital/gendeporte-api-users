@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatchEUploadPersonalInfoRequest {
+public class PatchUploadPersonalInfoRequest {
     @NotBlank
     @Size(min=4,max = 100)
     @JsonProperty("first_name")
